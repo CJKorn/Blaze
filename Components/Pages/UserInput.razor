@@ -1,0 +1,47 @@
+﻿@using System.ComponentModel.DataAnnotations
+@page "/userinput"
+
+<PageTitle>Submit an Incident</PageTitle>
+
+<h3>Incident Report</h3>
+
+<EditForm Model="@userInput" OnValidSubmit="HandleSubmit">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+	
+
+	<div>
+		<label for="incident">Type of incident</label>
+		<InputText id="incident" @bind-Value="userInput.Incident" class="form-control" />
+	</div>
+
+	<div>
+		<label for="location">Location of incident</label>
+		<InputText id="location" @bind-Value="userInput.Location" class="form-control" />
+	</div>
+
+	<button type="submit" class="btn btn-primary"> Submit</button>
+</EditForm>
+
+@if (isSubmitted){
+	<p>Form submitted successfully! Incident: @userInput.Incident Location: @userInput.Location</p>
+}
+
+
+
+@code {
+	private UserInputModel userInput = new UserInputModel();
+	private bool isSubmitted = false;
+
+	private void HandleSubmit()
+	{
+		// Handle form submission logic here
+		isSubmitted = true;
+	}
+
+	public class UserInputModel
+	{
+		public string Incident { get; set; }
+		public string Location { get; set; }
+	}
+}
