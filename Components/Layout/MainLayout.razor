@@ -7,11 +7,48 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            <table>
+                <tr>
+                    <button @onclick="ShowApiKeyInput">Add API</button>
+				</tr>
+                <tr>
+					@if (showApiKeyInput) {
+						<input type="text" @bind="ApiKey" />
+						<button @onclick="ConfirmApiKey">Confirm</button>
+					}
+                </tr>
+            </table>
         </div>
-
         <article class="content px-4">
             @Body
         </article>
     </main>
 </div>
+
+@code {
+    private string ApiKey;
+    private bool showApiKeyInput = false;
+    private readonly string apiKeyFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Blaze/keys.apikeys");
+
+    protected override void OnInitialized() {
+        if (File.Exists(apiKeyFilePath)) {
+            ApiKey = File.ReadAllText(apiKeyFilePath);
+        }
+    }
+
+    // Show the input field when "Add API" is clicked
+    private void ShowApiKeyInput() {
+        if (!showApiKeyInput) {
+			showApiKeyInput = true;
+        }
+        else {
+            showApiKeyInput = false;
+        }
+    }
+
+    // Save the updated API key to the file and hide the input field
+    private void ConfirmApiKey() {
+        File.WriteAllText(apiKeyFilePath, ApiKey);
+        showApiKeyInput = false;
+    }
+}

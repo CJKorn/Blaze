@@ -14,18 +14,20 @@ namespace Blaze {
             builder.Services.AddMauiBlazorWebView();
             String path;
             String key;
-            path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "keys.apikeys");
-            try {
-                
+            path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Blaze/keys.apikeys");
+            if (!File.Exists(path)) {
+                File.Create(path);
+			}
+			try {
                 Console.WriteLine(path);
                 key = File.ReadAllText(path).Trim();
                 builder.Services.AddBlazorGoogleMaps(key);
                 Console.WriteLine(key);
             }
             catch (Exception e) {
-                throw new Exception("Error reading API key at: " + path + " " + e.Message);
-                //Console.WriteLine("Error reading API key at: " + path + " " + e.Message);
-            }
+                //throw new Exception("Error reading API key at: " + path + " " + e.Message);
+                Console.WriteLine("Error reading API key at: " + path + " " + e.Message);
+			}
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
