@@ -22,7 +22,8 @@ namespace Blaze {
                 Console.WriteLine(path);
                 key = File.ReadAllText(path).Trim();
                 builder.Services.AddBlazorGoogleMaps(key);
-                Console.WriteLine(key);
+                Login.Key = key;
+				Console.WriteLine(key);
             }
             catch (Exception e) {
                 //throw new Exception("Error reading API key at: " + path + " " + e.Message);

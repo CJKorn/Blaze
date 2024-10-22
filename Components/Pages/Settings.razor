@@ -26,6 +26,7 @@
     // Save the updated API key to the file and hide the input field
     private void ConfirmApiKey()
     {
+        Login.Key = ApiKey;
         File.WriteAllText(apiKeyFilePath, ApiKey);
         showApiKeyInput = false;
     }
