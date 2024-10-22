@@ -11,13 +11,13 @@
 	
 
 	<div>
-		<label for="incident">Type of incident</label>
+		<label for="incident">Incident Title</label>
 		<InputText id="incident" @bind-Value="userInput.Incident" class="form-control" />
 	</div>
 
 	<div>
-		<label for="location">Location of incident</label>
-		<InputText id="location" @bind-Value="userInput.Location" class="form-control" />
+		<label for="description">Description of incident</label>
+		<InputText id="description" @bind-Value="userInput.Description" class="form-control" />
 	</div>
 	<div>
 		<label for="type">Incident Type</label>
@@ -31,11 +31,11 @@
 			<option value="6">Other</option>
 		</select>
 	</div>
-	<button type="submit" class="btn btn-primary"> Submit</button>
+	<button type="submit" class="btn btn-primary">Submit</button>
 </EditForm>
 
 @if (isSubmitted){
-	<p>Form submitted successfully! Incident: @userInput.Incident Location: @userInput.Location</p>
+	<p>Form submitted successfully! Incident: @userInput.Incident Location: @userInput.Description</p>
 }
 
 
@@ -53,6 +53,6 @@
 	public class UserInputModel
 	{
 		public string Incident { get; set; }
-		public string Location { get; set; }
+		public string Description { get; set; }
 	}
 }
