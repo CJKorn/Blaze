@@ -21,10 +21,10 @@ else {
 
 	protected override void OnInitialized() {
 		mapOptions = new MapOptions() {
-			Zoom = 13,
+			Zoom = SessionData.Zoom,
 			Center = new LatLngLiteral() {
-				Lat = 13.505892,
-				Lng = 100.8162
+				Lat = SessionData.Lat,
+				Lng = SessionData.Lng
 			},
 			MapTypeId = MapTypeId.Roadmap
 		};
@@ -32,5 +32,14 @@ else {
 
 	private async Task AfterMapRender() {
 		_bounds = await LatLngBounds.CreateAsync(_map1.JsRuntime);
+		await _map1.InteropObject.AddListener("drag", RecordState);
+		await _map1.InteropObject.AddListener("zoom_changed", RecordState);
+	}
+
+	private async void RecordState() {
+		LatLngLiteral Position = await _map1.InteropObject.GetCenter();
+		SessionData.Lat = Position.Lat;
+		SessionData.Lng = Position.Lng;
+		SessionData.Zoom = (int)Math.Round(await _map1.InteropObject.GetZoom());
 	}
 }

@@ -8,5 +8,8 @@ internal static class SessionData {
 	public static string IP { get; set; }
 	public static string Key { get; set; }
 	public static double Lat { get; set; }
-	public static double Long { get; set; }
+	public static double Lng { get; set; }
+	public static int Zoom { get; set; }
+	public static double ClickedLat { get; set; }
+	public static double ClickedLng { get; set; }
 }

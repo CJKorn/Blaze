@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using GoogleMapsComponents;
+using GoogleMapsComponents.Maps;
 
 namespace Blaze {
     public static class MauiProgram {
@@ -29,8 +30,12 @@ namespace Blaze {
                 //throw new Exception("Error reading API key at: " + path + " " + e.Message);
                 Console.WriteLine("Error reading API key at: " + path + " " + e.Message);
 			}
+
+            SessionData.Lat = -33.883239;
+			SessionData.Lng = 151.200497;
+            SessionData.Zoom = 12;
 #if DEBUG
-            builder.Services.AddBlazorWebViewDeveloperTools();
+			builder.Services.AddBlazorWebViewDeveloperTools();
     		builder.Logging.AddDebug();
 #endif
 
