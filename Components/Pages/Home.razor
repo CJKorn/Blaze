@@ -13,11 +13,17 @@ else {
 		<h1> NO API KEY!!! </h1>
 	</div>
 }
+<p >Lat: @SessionData.Lat</p>
+<p>Lng: @SessionData.Lng</p>
+<p>Clicked Lat: @SessionData.ClickedLat</p>
+<p>Clicked Lng: @SessionData.ClickedLng</p>
+
 @functions {
 	private GoogleMap _map1;
 	private MapOptions mapOptions;
 	private string Height = "500px";
 	private LatLngBounds _bounds;
+	private Marker Marker;
 
 	protected override void OnInitialized() {
 		mapOptions = new MapOptions() {
@@ -34,6 +40,8 @@ else {
 		_bounds = await LatLngBounds.CreateAsync(_map1.JsRuntime);
 		await _map1.InteropObject.AddListener("drag", RecordState);
 		await _map1.InteropObject.AddListener("zoom_changed", RecordState);
+		await _map1.InteropObject.AddListener("center_changed", RecordState);
+		await _map1.InteropObject.AddListener<MouseEvent>("click", async (e) => await OnClick(e));
 	}
 
 	private async void RecordState() {
@@ -42,4 +50,33 @@ else {
 		SessionData.Lng = Position.Lng;
 		SessionData.Zoom = (int)Math.Round(await _map1.InteropObject.GetZoom());
 	}
+
+	private async Task OnClick(MouseEvent e) {
+		//Console.WriteLine("Click.");
+
+		LatLngLiteral Position = e.LatLng;
+		SessionData.ClickedLat = Position.Lat;
+		SessionData.ClickedLng = Position.Lng;
+		await InvokeAsync(StateHasChanged);
+		await AddMarker(Position);
+	}
+
+	private async Task AddMarker(LatLngLiteral position) {
+		if (Marker != null) {
+			await Marker.SetMap(null);
+		}
+		MarkerOptions options = new MarkerOptions() {
+			Position = position,
+            Map = _map1.InteropObject,
+            Label = "Temp",
+            Draggable = true,
+            Icon = new Icon() {
+                Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+            }
+        };
+		var marker = await Marker.CreateAsync(_map1.JsRuntime, options);
+        var icon = await marker.GetIcon();
+        StateHasChanged();
+		Console.WriteLine(marker.GetPosition());
+    }
 }
