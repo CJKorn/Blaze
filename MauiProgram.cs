@@ -22,7 +22,7 @@ namespace Blaze {
                 Console.WriteLine(path);
                 key = File.ReadAllText(path).Trim();
                 builder.Services.AddBlazorGoogleMaps(key);
-                Login.Key = key;
+                SessionData.Key = key;
 				Console.WriteLine(key);
             }
             catch (Exception e) {
