@@ -1,6 +1,30 @@
 ﻿@page "/settings"
 <h3>Settings</h3>
+<!--html goes here
+    the other code goes within the code braces
+-->
+<p>IP Address</p>
 
+<p>API Key</p>
+<input type="text" @bind="ApiKey" style="width=500px"/>
+<button @onclick="ConfirmApiKey">Confirm</button>
 @code {
+    private string ApiKey;
+    private bool showApiKeyInput = false;
+    private readonly string apiKeyFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Blaze/keys.apikeys");
 
+    protected override void OnInitialized()
+    {
+        if (File.Exists(apiKeyFilePath))
+        {
+            ApiKey = File.ReadAllText(apiKeyFilePath);
+        }
+    }
+
+    // Save the updated API key to the file and hide the input field
+    private void ConfirmApiKey()
+    {
+        File.WriteAllText(apiKeyFilePath, ApiKey);
+        showApiKeyInput = false;
+    }
 }
