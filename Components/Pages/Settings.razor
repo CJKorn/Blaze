@@ -4,7 +4,8 @@
     the other code goes within the code braces
 -->
 <p>IP Address</p>
-
+<input type="text" @bind="IpAddress" style="width=500px"/>
+<button @onclick="ConfirmIpAddress">Confirm IP</button>
 <p>API Key</p>
 <input type="text" @bind="ApiKey" style="width=500px"/>
 <button @onclick="ConfirmApiKey">Confirm</button>
@@ -12,7 +13,7 @@
     private string ApiKey;
     private bool showApiKeyInput = false;
     private readonly string apiKeyFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Blaze/keys.apikeys");
-
+    private string IpAddress;
     protected override void OnInitialized()
     {
         if (File.Exists(apiKeyFilePath))
@@ -26,5 +27,9 @@
     {
         File.WriteAllText(apiKeyFilePath, ApiKey);
         showApiKeyInput = false;
+    }
+    private void ConfirmIpAddress()
+    {
+        
     }
 }
