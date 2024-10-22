@@ -19,7 +19,18 @@
 		<label for="location">Location of incident</label>
 		<InputText id="location" @bind-Value="userInput.Location" class="form-control" />
 	</div>
-
+	<div>
+		<label for="type">Incident Type</label>
+		<select name="type">
+			<option value="">Select Incident Type</option>
+			<option value="1">Natural Disaster</option>
+			<option value="2">Transit Incident</option>
+			<option value="3">Crime Scene</option>
+			<option value="4">Fire</option>
+			<option value="5">Infrastructure Outage</option>
+			<option value="6">Other</option>
+		</select>
+	</div>
 	<button type="submit" class="btn btn-primary"> Submit</button>
 </EditForm>
 
