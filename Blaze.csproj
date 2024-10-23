@@ -58,6 +58,16 @@
     </ItemGroup>
 
     <ItemGroup>
+      <MauiImage Include="wwwroot\images\admin_icon.svg" />
+      <MauiImage Include="wwwroot\images\user_icon.svg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\images\admin_icon.svg" />
+      <None Include="wwwroot\images\user_icon.svg" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="BlazorGoogleMaps" Version="4.7.14" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />

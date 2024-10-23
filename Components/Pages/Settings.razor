@@ -1,11 +1,12 @@
-﻿@page "/settings"
+﻿using System;
+
+@page "/settings"
 <h3>Settings</h3>
 <!--html goes here
     the other code goes within the code braces
 -->
 <p>IP Address</p>
 <input type="text" @bind="IpAddress" style="width=500px"/>
-<!--IF STATEMENT IS NEEDED TO CHECK IF LOGGED IN-->
 <button @onclick="ConfirmIpAddress">Confirm IP</button>
 <br /><br />
 <p>API Key</p>
@@ -37,7 +38,7 @@
     {
         //this still needs to be done, not entirely sure what this is for
     }
-    private void ResetApp()
-    {
+    private void ResetApp() {
+        System.Environment.Exit(0);
     }
 }

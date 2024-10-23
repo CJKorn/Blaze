@@ -1,85 +1,39 @@
 ﻿@page "/"
 @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
+@inject NavigationManager Navigation
+@inject AppState AppState
 
-<h1>Incident Map</h1>
-@if (SessionData.Key != null) {
-	<div style="height:@Height">
-		<GoogleMap @ref="@_map1" Id="map1" Options="@mapOptions" Height="100%" OnAfterInit="AfterMapRender"></GoogleMap>
-	</div>
-}
-else {
-	<div style="height:@Height">
-		<h1> NO API KEY!!! </h1>
-	</div>
-}
-<p >Lat: @SessionData.Lat</p>
-<p>Lng: @SessionData.Lng</p>
-<p>Clicked Lat: @SessionData.ClickedLat</p>
-<p>Clicked Lng: @SessionData.ClickedLng</p>
+<link href="css/Home.css" rel="stylesheet" />
 
-<button type="button" class="btn btn-primary">Report Incident</button>
-<!--Button to report an incident, needs to link to the User Input page-->
+<div class="page">
+    <h1>Please choose a profile</h1>
+    <div class="button-container">
+        <button class="profile-button admin-button" @onclick="AdminClick">
+            <img src="~/images/admin_icon.svg" alt="Admin" class="button-image" />
+            <span>Admin</span>
+        </button>
+        <button class="profile-button user-button" @onclick="UserClick">
+            <img src="~/images/user_icon.svg" alt="User" class="button-image" />
+            <span>User</span>
+        </button>
+    </div>
+</div>
 
-@functions {
-	private GoogleMap _map1;
-	private MapOptions mapOptions;
-	private string Height = "500px";
-	private LatLngBounds _bounds;
-	private Marker Marker;
+@code {
+    private void AdminClick() {
+        SessionData.signedIn = true;
+        SessionData.hosting = true;
+        AppState.Hosting = true;
+        InvokeAsync(StateHasChanged);
+        Navigation.NavigateTo("/Map");
+    }
 
-	protected override void OnInitialized() {
-		mapOptions = new MapOptions() {
-			Zoom = SessionData.Zoom,
-			Center = new LatLngLiteral() {
-				Lat = SessionData.Lat,
-				Lng = SessionData.Lng
-			},
-			MapTypeId = MapTypeId.Roadmap
-		};
-	}
-
-	private async Task AfterMapRender() {
-		_bounds = await LatLngBounds.CreateAsync(_map1.JsRuntime);
-		await _map1.InteropObject.AddListener("drag", RecordState);
-		await _map1.InteropObject.AddListener("zoom_changed", RecordState);
-		await _map1.InteropObject.AddListener("center_changed", RecordState);
-		await _map1.InteropObject.AddListener<MouseEvent>("click", async (e) => await OnClick(e));
-	}
-
-	private async void RecordState() {
-		LatLngLiteral Position = await _map1.InteropObject.GetCenter();
-		SessionData.Lat = Position.Lat;
-		SessionData.Lng = Position.Lng;
-		SessionData.Zoom = (int)Math.Round(await _map1.InteropObject.GetZoom());
-	}
-
-	private async Task OnClick(MouseEvent e) {
-		//Console.WriteLine("Click.");
-
-		LatLngLiteral Position = e.LatLng;
-		SessionData.ClickedLat = Position.Lat;
-		SessionData.ClickedLng = Position.Lng;
-		await InvokeAsync(StateHasChanged);
-		await AddMarker(Position);
-	}
-
-	private async Task AddMarker(LatLngLiteral position) {
-		if (Marker != null) {
-			await Marker.SetMap(null);
-		}
-		MarkerOptions options = new MarkerOptions() {
-			Position = position,
-            Map = _map1.InteropObject,
-            Label = "Temp",
-            Draggable = true,
-            Icon = new Icon() {
-                Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-            }
-        };
-		var marker = await Marker.CreateAsync(_map1.JsRuntime, options);
-        var icon = await marker.GetIcon();
-        StateHasChanged();
-		Console.WriteLine(marker.GetPosition());
+    private void UserClick() {
+        SessionData.signedIn = true;
+        SessionData.hosting = false;
+        AppState.Hosting = false;
+        InvokeAsync(StateHasChanged);
+        Navigation.NavigateTo("/Map");
     }
 }
