@@ -6,8 +6,8 @@
     the other code goes within the code braces
 -->
 <p>IP Address</p>
-<input type="text" @bind="IpAddress" style="width=500px"/>
-<button @onclick="ConfirmIpAddress">Confirm IP</button>
+<input type="text" @bind="IpAddress" style="width=500px" disabled="@IsHosting"/>
+<button @onclick="ConfirmIpAddress" disabled="@IsHosting">Confirm IP</button>
 <br /><br />
 <p>API Key</p>
 <input type="text" @bind="ApiKey" style="width=500px"/>
@@ -19,11 +19,16 @@
     private bool showApiKeyInput = false;
     private readonly string apiKeyFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Blaze/keys.apikeys");
     private string IpAddress;
+    private bool IsHosting => SessionData.hosting;
     protected override void OnInitialized()
     {
         if (File.Exists(apiKeyFilePath))
         {
             ApiKey = File.ReadAllText(apiKeyFilePath);
+        }
+
+        if (IsHosting) {
+            IpAddress = SessionData.myIP;
         }
     }
 
@@ -36,7 +41,7 @@
     }
     private void ConfirmIpAddress()
     {
-        //this still needs to be done, not entirely sure what this is for
+        SessionData.IP = IpAddress;
     }
     private void ResetApp() {
         System.Environment.Exit(0);
