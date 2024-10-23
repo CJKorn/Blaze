@@ -7,9 +7,12 @@
 <input type="text" @bind="IpAddress" style="width=500px"/>
 <!--IF STATEMENT IS NEEDED TO CHECK IF LOGGED IN-->
 <button @onclick="ConfirmIpAddress">Confirm IP</button>
+<br /><br />
 <p>API Key</p>
 <input type="text" @bind="ApiKey" style="width=500px"/>
 <button @onclick="ConfirmApiKey">Confirm</button>
+<br /><br />
+<button @onclick="ResetApp">Reset Application</button>
 @code {
     private string ApiKey;
     private bool showApiKeyInput = false;
@@ -32,6 +35,9 @@
     }
     private void ConfirmIpAddress()
     {
-        
+        //this still needs to be done, not entirely sure what this is for
+    }
+    private void ResetApp()
+    {
     }
 }
