@@ -14,4 +14,5 @@ internal static class SessionData {
 	public static int Zoom { get; set; }
 	public static double ClickedLat { get; set; }
 	public static double ClickedLng { get; set; }
+	public static bool Clicked { get; set; }
 }

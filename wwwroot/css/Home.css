@@ -44,20 +44,20 @@
 }
 
 .admin-button {
-    background-color: #007bff;
+    background-color: #264653;
 }
 
-.admin-button:hover {
-    background-color: #0069d9;
-}
+    .admin-button:hover {
+        background-color: #335F70;
+    }
 
 .user-button {
-    background-color: #ff5722;
+    background-color: #C53D1B;
 }
 
-.user-button:hover {
-    background-color: #e64a19;
-}
+    .user-button:hover {
+        background-color: #E24D28;
+    }
 
 .button-image {
     width: 8rem;
