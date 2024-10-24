@@ -1,4 +1,5 @@
-﻿using System;
+﻿@using GoogleMapsComponents
+@using GoogleMapsComponents.Maps
 
 @page "/settings"
 <h3>Settings</h3>
@@ -14,6 +15,10 @@
 <button @onclick="ConfirmApiKey">Confirm</button>
 <br /><br />
 <button @onclick="ResetApp">Reset Application</button>
+
+<!-- Delete before finishing -->
+<br />
+<button @onclick="TempData">Temp Data</button>
 @code {
     private string ApiKey;
     private bool showApiKeyInput = false;
@@ -45,5 +50,22 @@
     }
     private void ResetApp() {
         System.Environment.Exit(0);
+    }
+
+    private void TempData() {
+        List<Report> reports = new List<Report>();
+        reports.Add(new Mono("1", "1", 1, 1));
+        reports.Add(new Mono("2", "2", 2, 2));
+        reports.Add(new Mono("3", "3", 3, 3));
+        reports.Add(new Mono("4", "4", 4, 4));
+        reports.Add(new Mono("5", "5", 5, 5));
+        List<LatLngLiteral> points = new List<LatLngLiteral>();
+        points.Add(new LatLngLiteral() { Lat = 1, Lng = 1 });
+        points.Add(new LatLngLiteral() { Lat = 2, Lng = 2 });
+        points.Add(new LatLngLiteral() { Lat = 3, Lng = 3 });
+        points.Add(new LatLngLiteral() { Lat = 4, Lng = 4 });
+        reports.Add(new Poly("6", "6", points));
+        SessionData.Reports = reports;
+        SessionData.SaveReports();
     }
 }

@@ -92,10 +92,8 @@
 		await _map1.InteropObject.AddListener<MouseEvent>("click", async (e) => await OnClick(e));
 
 		if (SessionData.Clicked == true) {
-			LatLngLiteral position = new LatLngLiteral() {
-					Lat = SessionData.ClickedLat,
-					Lng = SessionData.ClickedLng
-				};
+			LatLngLiteral position = SessionData.LatLng(SessionData.ClickedLat, SessionData.ClickedLng);
+			SessionData.Clicked = false;
 			await AddMarker(position);
 		}
 	}

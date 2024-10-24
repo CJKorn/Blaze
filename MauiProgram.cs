@@ -24,9 +24,8 @@ namespace Blaze {
             builder.Logging.AddDebug();
 
             String key;
-            String path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Blaze");
-            String apiPath = Path.Combine(path, "keys.apikeys");
-            String jsonPath = Path.Combine(path, "data.json");
+            String apiPath = SessionData.apiFilePath;
+            String jsonPath = SessionData.jsonFilePath;
             if (!File.Exists(apiPath)) {
                 File.WriteAllText(apiPath, "");
             }
@@ -68,8 +67,8 @@ namespace Blaze {
                 .WithMode(HttpListenerMode.EmbedIO))
                 .WithLocalSessionManager()
                 .WithModule(new ActionModule("/", HttpVerbs.Get, async ctx => {
-                    var jsonFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Blaze/data.json");
-                    var json = await File.ReadAllTextAsync(jsonFilePath);
+                    //var jsonFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Blaze/data.json");
+                    var json = await File.ReadAllTextAsync(SessionData.jsonFilePath);
                     ctx.Response.ContentType = "application/json";
                     await ctx.SendStringAsync(json, "application/json", System.Text.Encoding.UTF8);
                 }));
