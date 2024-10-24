@@ -6,6 +6,7 @@ using EmbedIO.Actions;
 using EmbedIO;
 using System.Net;
 using System.Diagnostics;
+using System.Net.Sockets;
 
 namespace Blaze {
     public static class MauiProgram {
@@ -78,13 +79,11 @@ namespace Blaze {
 
         //https://stackoverflow.com/questions/6803073/get-local-ip-address
         private static string GetHostIpAddress() {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList) {
-                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork && !IPAddress.IsLoopback(ip)) {
-                    return ip.ToString();
-                }
-            }
-            throw new Exception("No suitable IP address found.");
-        }
+			var ipAddress = Dns.GetHostEntry(Dns.GetHostName())
+				.AddressList
+				.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork && !IPAddress.IsLoopback(ip)); //lambda expression with LINQ
+
+			return ipAddress?.ToString() ?? throw new Exception("No suitable IP address found.");
+		}
     }
 }

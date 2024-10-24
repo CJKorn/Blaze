@@ -46,7 +46,7 @@
 	<button type="submit" class="btn btn-primary">Submit</button>
 </EditForm>
 
-@if (isSubmitted){
+@if (isSubmitted) {
 	<p>Form submitted successfully! Incident: @userInput.Incident Location: @userInput.Description</p>
 }
 
@@ -133,5 +133,4 @@
 		Marker = await Marker.CreateAsync(_map1.JsRuntime, options);
 		await InvokeAsync(StateHasChanged);
 	}
-}
 }
