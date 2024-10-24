@@ -67,5 +67,8 @@
         reports.Add(new Poly("6", "6", points));
         SessionData.Reports = reports;
         SessionData.SaveReports();
+        reports = SessionData.GetReports();
+        SessionData.Reports = reports;
+        SessionData.SaveReports();
     }
 }
