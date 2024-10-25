@@ -66,9 +66,9 @@
         points.Add(new LatLngLiteral() { Lat = 4, Lng = 4 });
         reports.Add(new Poly("6", "6", points));
         SessionData.Reports = reports;
-        MarkerTools.SaveReports();
-        reports = MarkerTools.GetReports();
+        ReportTools.SaveReports();
+        reports = ReportTools.GetReports();
         SessionData.Reports = reports;
-        MarkerTools.SaveReports();
+        ReportTools.SaveReports();
     }
 }

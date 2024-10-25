@@ -1,8 +1,8 @@
 ﻿using GoogleMapsComponents.Maps;
 
-internal class MarkerTools {
+internal class ReportTools {
     private static readonly IReadWrite readWrite = new JsonReadWrite();
-    public MarkerTools() {
+    public ReportTools() {
     }
 
     public static LatLngLiteral LatLng(double lat, double lng) {
