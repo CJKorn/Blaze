@@ -24,7 +24,7 @@ internal class Updater : IDisposable {
 			return;
 		}
 		string json = await downloader.DownloadStringAsync(SessionData.IP);
-		List<Report> reports = readWrite.Deserialize<Report>(json);
+		List<Report> reports = readWrite.DeserializeFile<Report>(json);
 		SessionData.Reports = reports;
 		File.WriteAllText(SessionData.jsonFilePath, json);
 	}

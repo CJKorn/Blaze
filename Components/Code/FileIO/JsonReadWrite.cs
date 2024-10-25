@@ -4,7 +4,7 @@ using System.IO;
 using System.Text.Json;
 
 public class JsonReadWrite : IReadWrite {
-    public void Serialize<T>(List<T> data, string filePath) {
+    public void SerializeFile<T>(List<T> data, string filePath) {
         var options = new JsonSerializerOptions {
             WriteIndented = true,
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
@@ -15,7 +15,17 @@ public class JsonReadWrite : IReadWrite {
         File.WriteAllText(filePath, json);
     }
 
-    public List<T> Deserialize<T>(string filePath) {
+    public string SerializeString<T>(List<T> data) {
+		var options = new JsonSerializerOptions {
+			WriteIndented = true,
+	    	DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+			// Default serializer settings with polymorphism support
+		};
+
+		return JsonSerializer.Serialize(data, options);
+	}
+
+	public List<T> DeserializeFile<T>(string filePath) {
         if (!File.Exists(filePath)) {
             return new List<T>();
         }
@@ -28,4 +38,13 @@ public class JsonReadWrite : IReadWrite {
 
         return JsonSerializer.Deserialize<List<T>>(json, options);
     }
+
+    public List<T> DeserializeString<T>(string json) {
+		var options = new JsonSerializerOptions {
+			// Enable deserialization of polymorphic types
+			DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+		};
+
+		return JsonSerializer.Deserialize<List<T>>(json, options);
+	}
 }

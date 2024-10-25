@@ -71,12 +71,25 @@ namespace Blaze {
                 .WithLocalSessionManager()
                 .WithModule(new ActionModule("/", HttpVerbs.Get, async ctx => {
                     //var jsonFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Blaze/data.json");
-                    var json = await File.ReadAllTextAsync(SessionData.jsonFilePath);
+                    string json = await File.ReadAllTextAsync(SessionData.jsonFilePath);
                     ctx.Response.ContentType = "application/json";
                     await ctx.SendStringAsync(json, "application/json", System.Text.Encoding.UTF8);
-                }));
+                }))
+		        .WithModule(new ActionModule("/report", HttpVerbs.Post, async ctx => {
+			        // Receive JSON data via POST request
+			        using var reader = new StreamReader(ctx.OpenRequestStream());
+			        string receivedJson = await reader.ReadToEndAsync();
 
-            Task.Run(() => server.RunAsync());
+					// Do thingy with received JSON
+					//IReadWrite readWrite = new JsonReadWrite();
+                    ReportTools.ReceiveMessage(receivedJson);
+
+					// Respond with a success message
+					ctx.Response.ContentType = "application/json";
+			        await ctx.SendStringAsync("{\"status\":\"received\"}", "application/json", System.Text.Encoding.UTF8);
+		}));
+
+			Task.Run(() => server.RunAsync());
         }
 
         //https://stackoverflow.com/questions/6803073/get-local-ip-address
