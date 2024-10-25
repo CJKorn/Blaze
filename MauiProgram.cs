@@ -23,8 +23,9 @@ namespace Blaze {
             builder.Services.AddSingleton<AppState>();
             builder.Logging.AddDebug();
             builder.Services.AddSingleton<Updater>();
+            builder.Services.AddSingleton<ReportTools>();
 
-			String key;
+            String key;
             String apiPath = SessionData.apiFilePath;
             String jsonPath = SessionData.jsonFilePath;
             if (!File.Exists(apiPath)) {

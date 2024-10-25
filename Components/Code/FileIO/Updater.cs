@@ -16,6 +16,9 @@ internal class Updater : IDisposable {
 	}
 
 	public void Start() {
+		if (SessionData.hosting) {
+			return;
+		}
 		timer = new Timer(UpdateReports, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
 	}
 
