@@ -22,8 +22,9 @@ namespace Blaze {
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddSingleton<AppState>();
             builder.Logging.AddDebug();
+            builder.Services.AddSingleton<Updater>();
 
-            String key;
+			String key;
             String apiPath = SessionData.apiFilePath;
             String jsonPath = SessionData.jsonFilePath;
             if (!File.Exists(apiPath)) {
@@ -36,6 +37,7 @@ namespace Blaze {
                 Console.WriteLine(apiPath);
                 key = File.ReadAllText(apiPath).Trim();
                 builder.Services.AddBlazorGoogleMaps(key);
+                builder.Services.AddScoped(sp => new HttpClient { }); //https://stackoverflow.com/questions/72427377/create-and-use-httpclient-in-a-net-maui-app
                 SessionData.Key = key;
                 Console.WriteLine(key);
             }
@@ -53,7 +55,8 @@ namespace Blaze {
 #endif
 
             var app = builder.Build();
-            StartHttpServer();
+            app.Services.GetService<Updater>()?.Start();
+			StartHttpServer();
 
             return app;
         }
