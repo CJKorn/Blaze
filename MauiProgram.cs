@@ -80,9 +80,9 @@ namespace Blaze {
 			        // Receive JSON data via POST request
 			        using var reader = new StreamReader(ctx.OpenRequestStream());
 			        string receivedJson = await reader.ReadToEndAsync();
-
-					// Do thingy with received JSON
-					//IReadWrite readWrite = new JsonReadWrite();
+                    SessionData.debug = receivedJson;
+                    // Do thingy with received JSON
+                    //IReadWrite readWrite = new JsonReadWrite();
                     ReportTools.ReceiveMessage(receivedJson);
 
 					// Respond with a success message

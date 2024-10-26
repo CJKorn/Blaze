@@ -29,6 +29,9 @@ public class JsonReadWrite : IReadWrite {
         if (!File.Exists(filePath)) {
             return new List<T>();
         }
+        if (string.IsNullOrEmpty(File.ReadAllText(filePath))) {
+            return new List<T>();
+        }
 
         string json = File.ReadAllText(filePath);
         var options = new JsonSerializerOptions {
@@ -40,7 +43,10 @@ public class JsonReadWrite : IReadWrite {
     }
 
     public List<T> DeserializeString<T>(string json) {
-		var options = new JsonSerializerOptions {
+        if (string.IsNullOrEmpty(json)) {
+            return new List<T>();
+        }
+        var options = new JsonSerializerOptions {
 			// Enable deserialization of polymorphic types
 			DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
 		};

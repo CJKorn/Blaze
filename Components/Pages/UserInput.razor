@@ -24,12 +24,12 @@
 
 	<div>
 		<label for="incident">Incident Title</label>
-		<InputText id="incident" @bind-Value="userInput.Incident" class="form-control" />
+		<InputText id="incident" @bind-Value="@userInput.Incident" class="form-control" />
 	</div>
 
 	<div>
 		<label for="description">Description of incident</label>
-		<InputText id="description" @bind-Value="userInput.Description" class="form-control" />
+		<InputText id="description" @bind-Value="@userInput.Description" class="form-control" />
 	</div>
 	<div>
 		<label for="type">Incident Type</label>
@@ -53,7 +53,9 @@
 
 
 @code {
-	private UserInputModel userInput = new UserInputModel();
+	// public string Incident { get; set; }
+	// public string Description { get; set; }
+	UserInputModel userInput = new UserInputModel();
 	private bool isSubmitted = false;
 	private GoogleMap _map1;
 	private MapOptions mapOptions;
@@ -61,19 +63,27 @@
 	private LatLngBounds _bounds;
 	private Marker Marker;
 
-	private void HandleSubmit()
-	{
-		// Call SaveLocation to add the clicked marker position to the JSON file
-		SessionData.SaveLocation(SessionData.ClickedLat, SessionData.ClickedLng);
-
-		// Set the flag to show submission message
-		isSubmitted = true;
-	}
-
 	public class UserInputModel
 	{
 		public string Incident { get; set; }
 		public string Description { get; set; }
+	}
+
+	private void HandleSubmit()
+	{
+		Report report = new Mono(
+			userInput.Incident,
+			userInput.Description,
+			SessionData.ClickedLat,
+			SessionData.ClickedLng,
+			"https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+			Report.Category.Default
+		);
+		// SessionData.Reports.Add(report);
+		ReportTools.SendReports(report);
+
+		// Set the flag to show submission message
+		isSubmitted = true;
 	}
 
 	protected override void OnInitialized() {

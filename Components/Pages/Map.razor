@@ -46,9 +46,7 @@ else {
                 },
                 MapTypeId = MapTypeId.Roadmap
             };
-
-      
-        SessionData.LoadLocations();
+        SessionData.Reports = ReportTools.GetReports();
     }
 
     private async Task AfterMapRender()
@@ -59,7 +57,7 @@ else {
         await _map1.InteropObject.AddListener("center_changed", RecordState);
         await _map1.InteropObject.AddListener<MouseEvent>("click", async (e) => await OnClick(e));
 
-      
+
         await PlacePinsFromJson();
     }
 
@@ -111,14 +109,15 @@ else {
 
     private async Task PlacePinsFromJson()
     {
-        foreach (var location in SessionData.Locations)
-        {
+        List<Mono> monos = new List<Mono>();
+        monos = ReportTools.GetMonos(SessionData.Reports);
+        foreach (Mono mono in monos) {
             MarkerOptions options = new MarkerOptions
                 {
                     Position = new LatLngLiteral
                     {
-                        Lat = location.Lat,
-                        Lng = location.Lng
+                        Lat = mono.Lat,
+                        Lng = mono.Lng
                     },
                     Map = _map1.InteropObject,
                     Label = "Incident",

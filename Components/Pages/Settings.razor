@@ -15,6 +15,9 @@
 <button @onclick="ConfirmApiKey">Confirm</button>
 <br /><br />
 <button @onclick="ResetApp">Reset Application</button>
+<br /><br />
+<p>Debug Info</p>
+<input type="text" value="@DebugInfo" style="width=500px" disabled="true"/>
 
 <!-- Delete before finishing -->
 <br />
@@ -25,6 +28,8 @@
     private readonly string apiKeyFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Blaze/keys.apikeys");
     private string IpAddress;
     private bool IsHosting => SessionData.hosting;
+    private string DebugInfo => SessionData.debug;
+
     protected override void OnInitialized()
     {
         if (File.Exists(apiKeyFilePath))
@@ -47,6 +52,7 @@
     private void ConfirmIpAddress()
     {
         SessionData.IP = IpAddress;
+        InvokeAsync(StateHasChanged);
     }
     private void ResetApp() {
         System.Environment.Exit(0);
@@ -65,14 +71,12 @@
         points.Add(new LatLngLiteral() { Lat = 3, Lng = 3 });
         points.Add(new LatLngLiteral() { Lat = 4, Lng = 4 });
         reports.Add(new Poly("6", "6", points, "", Report.Category.Default));
-        SessionData.Reports = reports;
-        ReportTools.SaveReports();
-        reports = ReportTools.GetReports();
-        SessionData.Reports = reports;
-        ReportTools.SaveReports();
+        // SessionData.Reports = reports;
+        // ReportTools.SaveReports();
+        // reports = ReportTools.GetReports();
+        // SessionData.Reports = reports;
+        // ReportTools.SaveReports();
 
-        if (!SessionData.hosting) {
-            ReportTools.SendReports(reports);
-        }
+        ReportTools.SendReports(reports);
     }
 }
