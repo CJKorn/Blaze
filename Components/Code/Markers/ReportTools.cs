@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Devices.Sensors;
+using Swan.Formatters;
 
 internal class ReportTools {
     private static readonly IReadWrite readWrite = new JsonReadWrite();
@@ -39,20 +40,25 @@ internal class ReportTools {
     }
 
     public static void ReceiveMessage(string message) {
+        SessionData.debug = "";
         List<object> list = readWrite.DeserializeString<object>(message);
-        List<Report> reports = new List<Report>();
+		File.WriteAllText(SessionData.jsonFilePath + "a", message);
+		List<Report> reports = new List<Report>();
         try {
             foreach (object obj in list) {
                 if (obj is Report report) {
                     reports.Add(report);
-                } else {
+                    SessionData.debug += report.ToString() + "\n";
+				} else {
                     _logger.LogWarning($"Object of type {obj.GetType()} is not a Report or derived from Report");
-                }
+                    SessionData.debug += $"Object of type {obj.GetType()} is not a Report or derived from Report \n";
+				}
             }
         }
         catch (Exception e) {
             _logger.LogError(e, "Error while processing received message");
-        }
+			SessionData.debug += e.Message + "\n";
+		}
         foreach (Report report in reports) {
             SessionData.Reports.Add(report);
         }
@@ -63,7 +69,6 @@ internal class ReportTools {
 
     public static void SendReports(List<Report> reports) {
         string json = readWrite.SerializeString(reports);
-		File.WriteAllText(SessionData.jsonFilePath + "a", json);
 		string ip = SessionData.IP;
 
         if (string.IsNullOrWhiteSpace(ip)) {

@@ -1,0 +1,72 @@
+[
+  {
+    "$type": "mono",
+    "Lat": 1,
+    "Lng": 1,
+    "Name": "1",
+    "Description": "1",
+    "Icon": "",
+    "Cat": 0
+  },
+  {
+    "$type": "mono",
+    "Lat": 2,
+    "Lng": 2,
+    "Name": "2",
+    "Description": "2",
+    "Icon": "",
+    "Cat": 0
+  },
+  {
+    "$type": "mono",
+    "Lat": 3,
+    "Lng": 3,
+    "Name": "3",
+    "Description": "3",
+    "Icon": "",
+    "Cat": 0
+  },
+  {
+    "$type": "mono",
+    "Lat": 4,
+    "Lng": 4,
+    "Name": "4",
+    "Description": "4",
+    "Icon": "",
+    "Cat": 0
+  },
+  {
+    "$type": "mono",
+    "Lat": 5,
+    "Lng": 5,
+    "Name": "5",
+    "Description": "5",
+    "Icon": "",
+    "Cat": 0
+  },
+  {
+    "$type": "poly",
+    "LatLngLiterals": [
+      {
+        "lat": 1,
+        "lng": 1
+      },
+      {
+        "lat": 2,
+        "lng": 2
+      },
+      {
+        "lat": 3,
+        "lng": 3
+      },
+      {
+        "lat": 4,
+        "lng": 4
+      }
+    ],
+    "Name": "6",
+    "Description": "6",
+    "Icon": "",
+    "Cat": 0
+  }
+]

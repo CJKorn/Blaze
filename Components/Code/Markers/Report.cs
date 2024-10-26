@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 [JsonPolymorphic] // Enable polymorphic serialization
 [JsonDerivedType(typeof(Mono), "mono")] // Use "mono" as the type discriminator for Mono
 [JsonDerivedType(typeof(Poly), "poly")] // Use "poly" as the type discriminator for Poly
-internal abstract class Report {
+public abstract class Report {
 	public enum Category {
 		Default,
 		Accident,

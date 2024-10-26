@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
 [JsonDerivedType(typeof(Mono), "mono")] // Use "mono" as the type discriminator for Mono
-internal class Mono : Report {
+public class Mono : Report {
 
 	public double Lat { get; set; }
 	public double Lng { get; set; }

@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 
 [JsonDerivedType(typeof(Poly), "poly")] // Use "poly" as the type discriminator for Poly
-internal class Poly : Report {
+public class Poly : Report {
 
 	public List<LatLngLiteral> LatLngLiterals { get; set; }
 
