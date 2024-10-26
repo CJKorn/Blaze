@@ -16,13 +16,6 @@ else {
     </div>
 }
 
-<!--
-<p>Lat: @SessionData.Lat</p>
-<p>Lng: @SessionData.Lng</p>
-<p>Clicked Lat: @SessionData.ClickedLat</p>
-<p>Clicked Lng: @SessionData.ClickedLng</p>
--->
-
 @if (Marker != null) {
     <button type="button" class="btn btn-primary" @onclick="Report" style="padding: 5px; margin: 5px float: right;">Report Incident</button>
 }
@@ -30,11 +23,11 @@ else {
 
 
 @code {
-    private GoogleMap _map1;
-    private MapOptions mapOptions;
+    private GoogleMap? _map1;
+    private MapOptions? mapOptions;
     private string Height = "500px";
-    private LatLngBounds _bounds;
-    private Marker Marker;
+    private LatLngBounds? _bounds;
+    private Marker? Marker;
 
     protected override void OnInitialized()
     {
@@ -58,7 +51,6 @@ else {
         await _map1.InteropObject.AddListener("zoom_changed", RecordState);
         await _map1.InteropObject.AddListener("center_changed", RecordState);
         await _map1.InteropObject.AddListener<MouseEvent>("click", async (e) => await OnClick(e));
-
 
         await PlacePinsFromJson();
     }
@@ -111,25 +103,42 @@ else {
 
     private async Task PlacePinsFromJson()
     {
+        await PlaceMonoPinsFromJson();
+        await PlacePolyPinsFromJson();
+    }
+
+    private async Task PlaceMonoPinsFromJson() {
         List<Mono> monos = new List<Mono>();
         monos = ReportTools.GetMonos(SessionData.Reports);
-        foreach (Mono mono in monos) {
+        foreach (Mono mono in monos)
+        {
             MarkerOptions options = new MarkerOptions
+            {
+                Title = mono.Name,
+                Position = new LatLngLiteral
                 {
-                    Position = new LatLngLiteral
-                    {
-                        Lat = mono.Lat,
-                        Lng = mono.Lng
-                    },
-                    Map = _map1.InteropObject,
-                    Label = "Incident",
-                    Icon = new Icon()
-                    {
-                        Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                    }
-                };
+                    Lat = mono.Lat,
+                    Lng = mono.Lng
+                },
+                Map = _map1.InteropObject,
+                Label = "Incident",
+                Icon = new Icon()
+                {
+                    Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                }
+            };
             await Marker.CreateAsync(_map1.JsRuntime, options);
         }
     }
-}
 
+    private async Task PlacePolyPinsFromJson() {
+        List<Poly> polys = ReportTools.GetPolys(SessionData.Reports);
+        foreach (Poly poly in polys) {
+            IEnumerable<IEnumerable<LatLngLiteral>> points = new List<IEnumerable<LatLngLiteral>> { poly.LatLngLiterals };
+            PolygonOptions options = new PolygonOptions {
+                Paths = points
+            };
+            await Polygon.CreateAsync(_map1.JsRuntime, options);
+        }
+    }
+}
