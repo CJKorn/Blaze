@@ -8,13 +8,13 @@
 -->
 <p>IP Address</p>
 <input type="text" @bind="IpAddress" style="width=500px" disabled="@IsHosting"/>
-<button @onclick="ConfirmIpAddress" disabled="@IsHosting">Confirm IP</button>
+<button @onclick="ConfirmIpAddress" disabled="@IsHosting" style="padding: 5px;">Confirm IP</button>
 <br /><br />
 <p>API Key</p>
 <input type="text" @bind="ApiKey" style="width=500px"/>
-<button @onclick="ConfirmApiKey">Confirm</button>
+<button @onclick="ConfirmApiKey" style="padding: 5px;">Confirm</button>
 <br /><br />
-<button @onclick="ResetApp">Reset Application</button>
+<button @onclick="ResetApp" style="padding: 5px;">Reset Application</button>
 <br /><br />
 <p>Debug Info</p>
 <textarea value="@DebugInfo" style="width:500px; height:200px;"></textarea>

@@ -22,16 +22,16 @@
 	<DataAnnotationsValidator />
 	<ValidationSummary />
 
-	<div>
+	<div style="padding: 10px;">
 		<label for="incident">Incident Title</label>
 		<InputText id="incident" @bind-Value="@userInput.Incident" class="form-control" />
 	</div>
 
-	<div>
+	<div style="padding: 10px">
 		<label for="description">Description of incident</label>
 		<InputText id="description" @bind-Value="@userInput.Description" class="form-control" />
 	</div>
-	<div>
+	<div style="padding: 10px;">
 		<label for="type">Incident Type</label>
 		<select name="type">
 			<option value="">Select Incident Type</option>
