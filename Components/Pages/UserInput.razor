@@ -63,7 +63,10 @@
 
 	private void HandleSubmit()
 	{
-		// Handle form submission logic here
+		// Call SaveLocation to add the clicked marker position to the JSON file
+		SessionData.SaveLocation(SessionData.ClickedLat, SessionData.ClickedLng);
+
+		// Set the flag to show submission message
 		isSubmitted = true;
 	}
 

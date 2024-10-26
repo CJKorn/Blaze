@@ -58,6 +58,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Remove="Resources\Raw\dataputinappdatawithapikey.json" />
+    </ItemGroup>
+
+    <ItemGroup>
       <MauiImage Include="wwwroot\images\admin_icon.svg" />
       <MauiImage Include="wwwroot\images\user_icon.svg" />
     </ItemGroup>

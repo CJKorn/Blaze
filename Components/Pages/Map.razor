@@ -34,33 +34,45 @@ else {
     private LatLngBounds _bounds;
     private Marker Marker;
 
-    protected override void OnInitialized() {
-        mapOptions = new MapOptions() {
+    protected override void OnInitialized()
+    {
+        mapOptions = new MapOptions()
+            {
                 Zoom = SessionData.Zoom,
-                Center = new LatLngLiteral() {
+                Center = new LatLngLiteral()
+                {
                     Lat = SessionData.Lat,
                     Lng = SessionData.Lng
                 },
                 MapTypeId = MapTypeId.Roadmap
             };
+
+      
+        SessionData.LoadLocations();
     }
 
-    private async Task AfterMapRender() {
+    private async Task AfterMapRender()
+    {
         _bounds = await LatLngBounds.CreateAsync(_map1.JsRuntime);
         await _map1.InteropObject.AddListener("drag", RecordState);
         await _map1.InteropObject.AddListener("zoom_changed", RecordState);
         await _map1.InteropObject.AddListener("center_changed", RecordState);
         await _map1.InteropObject.AddListener<MouseEvent>("click", async (e) => await OnClick(e));
+
+      
+        await PlacePinsFromJson();
     }
 
-    private async void RecordState() {
+    private async void RecordState()
+    {
         LatLngLiteral Position = await _map1.InteropObject.GetCenter();
         SessionData.Lat = Position.Lat;
         SessionData.Lng = Position.Lng;
         SessionData.Zoom = (int)Math.Round(await _map1.InteropObject.GetZoom());
     }
 
-    private async Task OnClick(MouseEvent e) {
+    private async Task OnClick(MouseEvent e)
+    {
         LatLngLiteral Position = e.LatLng;
         SessionData.ClickedLat = Position.Lat;
         SessionData.ClickedLng = Position.Lng;
@@ -68,18 +80,22 @@ else {
         await AddMarker(Position);
     }
 
-    private async Task AddMarker(LatLngLiteral position) {
-        if (Marker != null) {
+    private async Task AddMarker(LatLngLiteral position)
+    {
+        if (Marker != null)
+        {
             await Marker.SetMap(null);
             Marker = null;
         }
 
-        MarkerOptions options = new MarkerOptions() {
+        MarkerOptions options = new MarkerOptions()
+            {
                 Position = position,
                 Map = _map1.InteropObject,
                 Label = "Temp",
                 Draggable = true,
-                Icon = new Icon() {
+                Icon = new Icon()
+                {
                     Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
                 }
             };
@@ -87,8 +103,32 @@ else {
         await InvokeAsync(StateHasChanged);
     }
 
-    private void Report() {
-		SessionData.Clicked = true;
-		NavigationManager.NavigateTo("/userinput");
-	}
+    private void Report()
+    {
+        SessionData.Clicked = true;
+        NavigationManager.NavigateTo("/userinput");
+    }
+
+    private async Task PlacePinsFromJson()
+    {
+        foreach (var location in SessionData.Locations)
+        {
+            MarkerOptions options = new MarkerOptions
+                {
+                    Position = new LatLngLiteral
+                    {
+                        Lat = location.Lat,
+                        Lng = location.Lng
+                    },
+                    Map = _map1.InteropObject,
+                    Label = "Incident",
+                    Icon = new Icon()
+                    {
+                        Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                    }
+                };
+            await Marker.CreateAsync(_map1.JsRuntime, options);
+        }
+    }
 }
+
