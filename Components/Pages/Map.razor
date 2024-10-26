@@ -2,8 +2,8 @@
 @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
 @inject NavigationManager NavigationManager
-
-<h1>Incident Map</h1>
+<div class="page" style="background-color: #F6E8EA;">
+    <h1 style="text-align: center; color: #EF626C; text-decoration: underline;">Incident Map</h1>
 
 @if (SessionData.Key != null) {
     <div style="height:@Height">
@@ -17,8 +17,10 @@ else {
 }
 
 @if (Marker != null) {
-    <button type="button" class="btn btn-primary" @onclick="Report">Report Incident</button>
+    <button type="button" class="btn btn-primary" @onclick="Report" style="padding: 5px; margin: 5px float: right;">Report Incident</button>
 }
+</div>
+
 
 @code {
     private GoogleMap? _map1;

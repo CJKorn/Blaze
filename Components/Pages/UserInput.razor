@@ -4,52 +4,54 @@
 
 @page "/userinput"
 
-<PageTitle>Submit an Incident</PageTitle>
+<div class="page" style="background-color: #F6E8EA;">
 
-<h3>Incident Report</h3>
 
-@if (SessionData.Key != null) {
-	<div style="height:@Height">
-		<GoogleMap @ref="@_map1" Id="map1" Options="@mapOptions" Height="100%" OnAfterInit="AfterMapRender"></GoogleMap>
-	</div>
-} else {
-	<div style="height:@Height">
-		<h1>NO API KEY!!!</h1>
-	</div>
-}
 
-<EditForm Model="@userInput" OnValidSubmit="HandleSubmit">
-	<DataAnnotationsValidator />
-	<ValidationSummary />
+	<h3 style="color: #EF626C; text-align: center; text-decoration: underline;">Incident Report</h3>
 
-	<div>
-		<label for="incident">Incident Title</label>
-		<InputText id="incident" @bind-Value="@userInput.Incident" class="form-control" />
-	</div>
+	@if (SessionData.Key != null) {
+		<div style="height:@Height">
+			<GoogleMap @ref="@_map1" Id="map1" Options="@mapOptions" Height="100%" OnAfterInit="AfterMapRender"></GoogleMap>
+		</div>
+	} else {
+		<div style="height:@Height">
+			<h1>NO API KEY!!!</h1>
+		</div>
+	}
 
-	<div>
-		<label for="description">Description of incident</label>
-		<InputText id="description" @bind-Value="@userInput.Description" class="form-control" />
-	</div>
-	<div>
-		<label for="type">Incident Type</label>
-		<select name="type">
-			<option value="">Select Incident Type</option>
-			<option value="1">Natural Disaster</option>
-			<option value="2">Transit Incident</option>
-			<option value="3">Crime Scene</option>
-			<option value="4">Fire</option>
-			<option value="5">Infrastructure Outage</option>
-			<option value="6">Other</option>
-		</select>
-	</div>
-	<button type="submit" class="btn btn-primary">Submit</button>
-</EditForm>
+	<EditForm Model="@userInput" OnValidSubmit="HandleSubmit">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
 
-@if (isSubmitted) {
-	<p>Form submitted successfully! Incident: @userInput.Incident Location: @userInput.Description</p>
-}
+		<div style="padding: 10px;">
+			<label for="incident">Incident Title</label>
+			<InputText id="incident" @bind-Value="@userInput.Incident" class="form-control" />
+		</div>
 
+		<div style="padding: 10px">
+			<label for="description">Description of incident</label>
+			<InputText id="description" @bind-Value="@userInput.Description" class="form-control" />
+		</div>
+		<div style="padding: 10px;">
+			<label for="type">Incident Type</label>
+			<select name="type">
+				<option value="">Select Incident Type</option>
+				<option value="1">Natural Disaster</option>
+				<option value="2">Transit Incident</option>
+				<option value="3">Crime Scene</option>
+				<option value="4">Fire</option>
+				<option value="5">Infrastructure Outage</option>
+				<option value="6">Other</option>
+			</select>
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</EditForm>
+
+	@if (isSubmitted) {
+		<p>Form submitted successfully! Incident: @userInput.Incident Location: @userInput.Description</p>
+	}
+</div>
 
 
 @code {

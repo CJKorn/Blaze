@@ -2,26 +2,28 @@
 @using GoogleMapsComponents.Maps
 
 @page "/settings"
-<h3>Settings</h3>
-<!--html goes here
-    the other code goes within the code braces
--->
-<p>IP Address</p>
-<input type="text" @bind="IpAddress" style="width=500px" disabled="@IsHosting"/>
-<button @onclick="ConfirmIpAddress" disabled="@IsHosting">Confirm IP</button>
-<br /><br />
-<p>API Key</p>
-<input type="text" @bind="ApiKey" style="width=500px"/>
-<button @onclick="ConfirmApiKey">Confirm</button>
-<br /><br />
-<button @onclick="ResetApp">Reset Application</button>
-<br /><br />
-<p>Debug Info</p>
-<textarea value="@DebugInfo" style="width:500px; height:200px;"></textarea>
+<div class="page" style="background-color: #F6E8EA;">
+    <h3 style="color: #EF626C; text-align: center; text-decoration: underline;">Settings</h3>
+    <!--html goes here
+        the other code goes within the code braces
+    -->
+    <p>IP Address</p>
+    <input type="text" @bind="IpAddress" style="width=500px" disabled="@IsHosting"/>
+    <button @onclick="ConfirmIpAddress" disabled="@IsHosting" style="padding: 5px;">Confirm IP</button>
+    <br /><br />
+    <p>API Key</p>
+    <input type="text" @bind="ApiKey" style="width=500px"/>
+    <button @onclick="ConfirmApiKey" style="padding: 5px;">Confirm</button>
+    <br /><br />
+    <button @onclick="ResetApp" style="padding: 5px;">Reset Application</button>
+    <br /><br />
+    <p>Debug Info</p>
+    <textarea value="@DebugInfo" style="width:500px; height:200px;"></textarea>
 
-<!-- Delete before finishing -->
-<br />
-<button @onclick="TempData">Temp Data</button>
+    <!-- Delete before finishing -->
+    <br />
+    <button @onclick="TempData">Temp Data</button>
+</div>
 @code {
     private string ApiKey;
     private bool showApiKeyInput = false;
