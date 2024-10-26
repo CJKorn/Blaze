@@ -40,6 +40,7 @@ internal class ReportTools {
     }
 
     public static void ReceiveMessage(string message) {
+        ReportTools.GetReports();
         SessionData.debug = "";
         List<object> list = readWrite.DeserializeString<object>(message);
 		File.WriteAllText(SessionData.jsonFilePath + "a", message);
@@ -63,7 +64,7 @@ internal class ReportTools {
             SessionData.Reports.Add(report);
         }
         ReportTools.SaveReports();
-        SessionData.Zoom = 1;
+        //SessionData.Zoom = 1;
     }
 
 
