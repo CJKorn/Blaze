@@ -1,4 +1,7 @@
-﻿@page "/"
+﻿<!--this is the landing page of the application where users are prompted to login either as an Admin or a User
+    lines 4-26 define the interface layout and below that is the c# for the application
+-->
+@page "/"
 @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
 @inject NavigationManager Navigation
@@ -22,19 +25,20 @@
 </div>
 
 @code {
+    //below method determines the actions that occur if the Admin Button is pressed and what interface to navigate to next
     private void AdminClick() {
         SessionData.signedIn = true;
         SessionData.hosting = true;
         AppState.Hosting = true;
         InvokeAsync(StateHasChanged);
-        Navigation.NavigateTo("/Map");
+        Navigation.NavigateTo("/Map"); //navigates to Map page
     }
-
+    //below method defines what happens when the User Button is pressed, and what interface to navigate to next
     private void UserClick() {
         SessionData.signedIn = true;
         SessionData.hosting = false;
         AppState.Hosting = false;
         InvokeAsync(StateHasChanged);
-        Navigation.NavigateTo("/Map");
+        Navigation.NavigateTo("/Map"); //navigates to Map page
     }
 }

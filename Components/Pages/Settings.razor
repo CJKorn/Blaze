@@ -1,13 +1,11 @@
 ﻿@using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
 @using System.Text.RegularExpressions
-
+<!--this file defines the Settings page that is present within the application, including its layout and design, as well as what various buttons do-->
 @page "/settings"
 <div class="page" style="background-color: #F6E8EA;">
     <h3 style="color: #22181C; text-align: center;">Settings</h3>
-    <!--html goes here
-        the other code goes within the code braces
-    -->
+
     <p>IP Address</p>
     <input type="text" @bind="IpAddress" style="width=500px" disabled="@IsHosting"/>
     <button @onclick="ConfirmIpAddress" disabled="@IsHosting" style="padding: 5px;">Confirm IP</button>
@@ -42,6 +40,7 @@
     private bool IsHosting => SessionData.hosting;
     private string DebugInfo => SessionData.debug;
 
+    //the method below runs when the page is first initialised, and checks that the api key file is valif and if hosting is occuring or not.
     protected override void OnInitialized()
     {
         if (File.Exists(apiKeyFilePath))
@@ -53,7 +52,7 @@
             IpAddress = SessionData.myIP;
         }
     }
-
+    //the method below ensures the api key given is valid and writes it to the file
     // Save the updated API key to the file and hide the input field
     private void ConfirmApiKey()
     {
@@ -62,7 +61,7 @@
         showApiKeyInput = false;
         apiPressed = true;
     }
-
+    //the method below checks if the provided IP Address is valid, and outputs an error message if not.
     private void ConfirmIpAddress() {
         if (IsValidIP(IpAddress)) {
             SessionData.IP = IpAddress;
