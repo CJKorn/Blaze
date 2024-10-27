@@ -1,6 +1,7 @@
 ﻿@page "/map"
 @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
+
 @inject NavigationManager NavigationManager
 <div class="page" style="background-color: #F6E8EA;">
     <h1 style="text-align: center; color: #22181C; text-decoration: underline;">Incident Map</h1>
@@ -16,7 +17,7 @@
     }
 
     @if (Marker != null) {
-        <button type="button" class="btn btn-primary" @onclick="Report" style="padding: 5px; margin: 5px float: right;">Report Incident</button>
+        <button type="button" class="btn btn-primary" @onclick="OpenReport" style="padding: 5px; margin: 5px float: right;">Report Incident</button>
     }
 
     @if (SessionData.SelectedReport != null) {
@@ -40,6 +41,7 @@
 </div>
 
 @code {
+ 
     private GoogleMap? _map1;
     private MapOptions? mapOptions;
     private string Height = "500px";
@@ -108,7 +110,7 @@
         await InvokeAsync(StateHasChanged);
     }
 
-    private void Report() {
+    private void OpenReport() {
         SessionData.Clicked = true;
         NavigationManager.NavigateTo("/userinput");
     }
@@ -143,29 +145,67 @@
         }
     }
 
-    private async Task PlacePolyPinsFromJson() {
+    private async Task PlacePolyPinsFromJson()
+    {
+        // Define color mappings for each category
+        var categoryColors = new Dictionary<Report.Category, (string StrokeColor, string FillColor)>
+    {
+        { Report.Category.Accident, ("#FF0000", "#FFCCCC") },
+        { Report.Category.Fire, ("#FF4500", "#FFA07A") },
+        { Report.Category.Crime, ("#8B0000", "#DC143C") },
+        { Report.Category.PowerOutage, ("#FFD700", "#FFF8DC") },
+        { Report.Category.WaterOutage, ("#1E90FF", "#ADD8E6") },
+        { Report.Category.Pollution, ("#556B2F", "#8FBC8F") },
+        { Report.Category.WildlifeIncident, ("#228B22", "#98FB98") },
+        { Report.Category.Traffic, ("#FFA500", "#FFE4B5") },
+        { Report.Category.RoadClosure, ("#A52A2A", "#FA8072") },
+        { Report.Category.PublicTransit, ("#0000FF", "#87CEFA") },
+        { Report.Category.Flood, ("#4169E1", "#B0C4DE") },
+        { Report.Category.SevereWeather, ("#2F4F4F", "#B0E0E6") },
+        { Report.Category.Heatwave, ("#FF6347", "#FFE4E1") },
+        { Report.Category.PublicGathering, ("#9932CC", "#DDA0DD") },
+        { Report.Category.Construction, ("#B8860B", "#FFD700") },
+        { Report.Category.Default, ("#000000", "#FFFFFF") } // Default colors if category is not found
+    };
+
+        
         List<Poly> polys = ReportTools.GetPolys(SessionData.Reports);
-        foreach (Poly poly in polys) {
-            //Do this Toby Pls
-            string strokeColor = "#000000"; //Use switch statement/dictonary or whatever to get enum and use that to set
-            string fillColor = "#000000"; //These varables to a colour thx
-            IEnumerable<IEnumerable<LatLngLiteral>> points = new List<IEnumerable<LatLngLiteral>> {
-                poly.LatLngLiterals
-            };
-            PolygonOptions options = new PolygonOptions {
+
+        foreach (Poly poly in polys)
+        {
+            // Get colors based on the category of the polygon
+            var (strokeColor, fillColor) = categoryColors.ContainsKey(poly.Cat)
+                ? categoryColors[poly.Cat]
+                : categoryColors[Report.Category.Default];
+
+            IEnumerable<IEnumerable<LatLngLiteral>> points = new List<IEnumerable<LatLngLiteral>>
+        {
+            poly.LatLngLiterals
+        };
+
+           
+            PolygonOptions options = new PolygonOptions
+                {
                     Paths = points,
                     StrokeColor = strokeColor,
-                    StrokeOpacity = (float)0.8,
+                    StrokeOpacity = 0.8f,
                     StrokeWeight = 2,
                     FillColor = fillColor,
-                    FillOpacity = (float)0.35,
+                    FillOpacity = 0.35f,
                     Map = _map1.InteropObject
                 };
+
+           
             Polygon polygon = await Polygon.CreateAsync(_map1.JsRuntime, options);
+
+           
             await polygon.AddListener<MouseEvent>("click", async e => await MarkerClicked(e, polygon, poly));
+
+           
             await InvokeAsync(StateHasChanged);
         }
     }
+
 
     private async Task MarkerClicked<T>(MouseEvent e, T marker, Report report) {
         SessionData.SelectedReport = report;
@@ -175,9 +215,9 @@
     }
 
     private void DeleteReport() {
-		ReportTools.DeleteReport(SessionData.SelectedReport);
-		SessionData.SelectedReport = null;
-		NavigationManager.NavigateTo("/map");
-        InvokeAsync(StateHasChanged);
+		// ReportTools.DeleteReport(SessionData.SelectedReport);
+		// SessionData.SelectedReport = null;
+		// NavigationManager.NavigateTo("/map");
+  //       InvokeAsync(StateHasChanged);
 	}
 }
