@@ -8,12 +8,6 @@ public class PolyReport : Report {
 
     public PolyReport() { }
 
-	public PolyReport(string name, string description, List<LatLngLiteral> latLngLiterals, string icon, Category cat) : base(name, description, icon, cat) {
-        LatLngLiterals = latLngLiterals;
-		//Icon = icon;
-		//Cat = cat;
-	}
-
     public PolyReport(string name, string description, List<LatLngLiteral> latLngLiterals, Category cat) : base(name, description, cat) {
         LatLngLiterals = latLngLiterals;
         //Icon = icon;

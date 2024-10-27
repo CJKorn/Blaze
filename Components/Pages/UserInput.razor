@@ -12,7 +12,7 @@
 
 	@if (SessionData.Key != null) {
 		<div style="height:@Height">
-			<GoogleMap @ref="@_map1" Id="map1" Options="@mapOptions" Height="100%" OnAfterInit="AfterMapRender"></GoogleMap>
+			<GoogleMapsComponents.GoogleMap @ref="@_map1" Id="map1" Options="@mapOptions" Height="100%" OnAfterInit="AfterMapRender"></GoogleMapsComponents.GoogleMap>
 		</div>
 	} else {
 		<div style="height:@Height">
@@ -61,7 +61,7 @@
 	// public string Description { get; set; }
 	UserInputModel userInput = new UserInputModel();
 	private bool isSubmitted = false;
-	private GoogleMap _map1;
+	private GoogleMapsComponents.GoogleMap _map1;
 	private MapOptions mapOptions;
 	private string Height = "300px";
 	private LatLngBounds _bounds;
@@ -140,10 +140,10 @@
 		MarkerOptions options = new MarkerOptions() {
 				Position = position,
 				Map = _map1.InteropObject,
-				Label = "Temp",
+				// Label = "Temp",
 				Draggable = true,
-				Icon = new Icon() {
-					Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+				Icon = new GoogleMapsComponents.Maps.Icon() {
+					Url = "images/pin.png"
 				}
 			};
 		Marker = await Marker.CreateAsync(_map1.JsRuntime, options);

@@ -9,13 +9,6 @@ public class MonoReport : Report {
     public MonoReport() { }
 
 
-    public MonoReport(string name, string description, double lat, double lng, string icon, Category cat) : base(name, description, icon, cat) {
-		Lat = lat;
-		Lng = lng;
-
-		//Cat = cat;
-	}
-
     public MonoReport(string name, string description, double lat, double lng, Category cat) : base(name, description, cat) {
         Lat = lat;
         Lng = lng;

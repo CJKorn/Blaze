@@ -14,24 +14,24 @@
 <div style="background-color:#312F2F;" class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="map" style="color: #F6E8EA !important;">
+            <NavLink class="nav-link" href="map" style="color: #F6E8EA !important; height: 10vh;">
                 <span  class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Map
             </NavLink>
         </div>
         @if (AppState.Hosting) {
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="statistics" style="color: #F6E8EA !important;">
+                <NavLink class="nav-link" href="statistics" style="color: #F6E8EA !important; height: 10vh;">
                     <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Statistics
                 </NavLink>
             </div>
         }
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="userinput" style="color: #F6E8EA !important;">
+            <NavLink class="nav-link" href="userinput" style="color: #F6E8EA !important; height: 10vh;">
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> User Input
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="settings" style="color: #F6E8EA !important;">
+            <NavLink class="nav-link" href="settings" style="color: #F6E8EA !important; height: 10vh;">
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Settings
             </NavLink>
         </div>
@@ -39,6 +39,8 @@
 </div>
 
 @code {
+    private string Profile => AppState.Hosting ? "Hosting" : "Not Hosting";
+
     protected override void OnInitialized() {
         AppState.PropertyChanged += (sender, args) => {
             if (args.PropertyName == nameof(AppState.Hosting)) {
