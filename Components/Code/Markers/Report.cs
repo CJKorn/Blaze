@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 [JsonPolymorphic] // Enable polymorphic serialization
-[JsonDerivedType(typeof(Mono), "mono")] // Use "mono" as the type discriminator for Mono
-[JsonDerivedType(typeof(Poly), "poly")] // Use "poly" as the type discriminator for Poly
+[JsonDerivedType(typeof(MonoReport), "mono")] // Use "mono" as the type discriminator for Mono
+[JsonDerivedType(typeof(PolyReport), "poly")] // Use "poly" as the type discriminator for Poly
 public abstract class Report {
 	public enum Category {
 		Default,

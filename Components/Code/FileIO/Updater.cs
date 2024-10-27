@@ -16,17 +16,17 @@ internal class Updater : IDisposable {
 	}
 
 	public void Start() {
-		if (SessionData.hosting) {
-			return;
-		}
+		//if (SessionData.hosting) {
+		//	return;
+		//}
 		timer = new Timer(UpdateReports, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
 	}
 
 	private async void UpdateReports(object state) {
-		if (SessionData.hosting) {
-			SessionData.Reports = ReportTools.GetReports();
-			return;
-		}
+		//if (SessionData.hosting) {
+		//	SessionData.Reports = ReportTools.GetReports();
+		//	return;
+		//}
 		if (string.IsNullOrEmpty(SessionData.IP)) {
 			return;
 		}

@@ -51,10 +51,10 @@ public class JsonReadWrite : IReadWrite {
                 var type = element.GetProperty("$type").GetString();
                 switch (type) {
                     case "mono":
-                        result.Add((T)(object)JsonSerializer.Deserialize<Mono>(element.GetRawText(), options));
+                        result.Add((T)(object)JsonSerializer.Deserialize<MonoReport>(element.GetRawText(), options));
                         break;
                     case "poly":
-                        result.Add((T)(object)JsonSerializer.Deserialize<Poly>(element.GetRawText(), options));
+                        result.Add((T)(object)JsonSerializer.Deserialize<PolyReport>(element.GetRawText(), options));
                         break;
                     default:
                         throw new NotSupportedException($"Type {type} is not supported");

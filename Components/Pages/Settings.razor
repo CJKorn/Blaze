@@ -52,6 +52,10 @@
         if (IsHosting) {
             IpAddress = SessionData.myIP;
         }
+        else {
+            IpAddress = SessionData.IP;
+        }
+
     }
     //the method below ensures the api key given is valid and writes it to the file
     // Save the updated API key to the file and hide the input field
@@ -88,17 +92,17 @@
 
     private void TempData() {
         List<Report> reports = new List<Report>();
-        reports.Add(new Mono("1", "1", 1, 1, "", Report.Category.Default));
-        reports.Add(new Mono("2", "2", 2, 2, "", Report.Category.Default));
-        reports.Add(new Mono("3", "3", 3, 3, "", Report.Category.Default));
-        reports.Add(new Mono("4", "4", 4, 4, "", Report.Category.Default));
-        reports.Add(new Mono("5", "5", 5, 5, "", Report.Category.Default));
+        reports.Add(new MonoReport("1", "1", 1, 1, Report.Category.Default));
+        reports.Add(new MonoReport("2", "2", 2, 2, Report.Category.Default));
+        reports.Add(new MonoReport("3", "3", 3, 3, Report.Category.Default));
+        reports.Add(new MonoReport("4", "4", 4, 4, Report.Category.Default));
+        reports.Add(new MonoReport("5", "5", 5, 5, Report.Category.Default));
         List<LatLngLiteral> points = new List<LatLngLiteral>();
         points.Add(new LatLngLiteral() { Lat = 1, Lng = 1 });
         points.Add(new LatLngLiteral() { Lat = 1, Lng = 2 });
         points.Add(new LatLngLiteral() { Lat = 2, Lng = 1 });
         points.Add(new LatLngLiteral() { Lat = 4, Lng = 4 });
-        reports.Add(new Poly("6", "6", points, "", Report.Category.Default));
+        reports.Add(new PolyReport("6", "6", points, Report.Category.Default));
         // SessionData.Reports = reports;
         // ReportTools.SaveReports();
         // reports = ReportTools.GetReports();

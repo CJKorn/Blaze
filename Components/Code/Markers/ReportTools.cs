@@ -4,7 +4,9 @@ using System.Net.Http.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Devices.Sensors;
 using Swan.Formatters;
+using System.Diagnostics;
 //this file defines the various tools and components needed in order to create a report
+
 internal class ReportTools {
     private static readonly IReadWrite readWrite = new JsonReadWrite();
     private static readonly HttpClient client = new HttpClient();
@@ -40,8 +42,9 @@ internal class ReportTools {
     }
     //takes a serialized message of reports, deserializes it, and stores them
     public static void ReceiveMessage(string message) {
+        //Debug.WriteLine("ReceiveMessage called");
         ReportTools.GetReports();
-        SessionData.debug = "";
+        SessionData.debug = message;
         List<object> list = readWrite.DeserializeString<object>(message);
 		File.WriteAllText(SessionData.jsonFilePath + "a", message);
 		List<Report> reports = new List<Report>();
@@ -87,6 +90,7 @@ internal class ReportTools {
         }
 
         var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+        //SessionData.debug = content.ToString();
         client.PostAsync(uriResult, content);
     }
     //this method takes an individual report object, adds it to a list of report objects then serializes that list, before
@@ -111,23 +115,24 @@ internal class ReportTools {
 		}
 
 		var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+        //SessionData.debug = content.ToString();
 		client.PostAsync(uriResult, content);
 	}
     //retrieves a list of Mono Objects based off of the list of Report objects
-	public static List<Mono> GetMonos(List<Report> reports) {
-        List<Mono> Monos = new List<Mono>();
+	public static List<MonoReport> GetMonos(List<Report> reports) {
+        List<MonoReport> Monos = new List<MonoReport>();
         foreach (Report report in reports) {
-            if (report is Mono mono) {
+            if (report is MonoReport mono) {
                 Monos.Add(mono);
             }
         }
         return Monos;
     }
     //retrieves a list of Poly objects, based off of the list of Report objects.
-    public static List<Poly> GetPolys(List<Report> reports) {
-        List<Poly> Polys = new List<Poly>();
+    public static List<PolyReport> GetPolys(List<Report> reports) {
+        List<PolyReport> Polys = new List<PolyReport>();
         foreach (Report report in reports) {
-            if (report is Poly poly) {
+            if (report is PolyReport poly) {
                 Polys.Add(poly);
             }
         }

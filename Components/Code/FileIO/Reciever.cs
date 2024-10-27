@@ -7,6 +7,7 @@ internal class Reciever {
 	IReadWrite readWrite = new JsonReadWrite();
 	[Route(HttpVerbs.Get, "/send-message/{message}")]
 	public string ReceiveMessage(string message) {
+		//SessionData.debug = message;
 		List<object> list = readWrite.DeserializeString<object>(message);
 		List<Report> reports = new List<Report>();
 		try {

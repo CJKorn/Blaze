@@ -76,7 +76,7 @@
 	//the method below creates a new report object when a user submits a report, and changes the value of a boolean to true.
 	private void HandleSubmit()
 	{
-		Report report = new Mono(
+		Report report = new MonoReport(
 			userInput.Incident,
 			userInput.Description,
 			SessionData.ClickedLat,

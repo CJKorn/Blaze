@@ -29,9 +29,9 @@
             <p><strong>Description:</strong> @SessionData.SelectedReport.Description</p>
             <p><strong>Category:</strong> @SessionData.SelectedReport.Cat</p>
             <!-- <p><strong>Icon:</strong> <img src="@SessionData.SelectedReport.Icon" alt="Icon" /></p> -->
-            @if (SessionData.SelectedReport is Mono) {
-				<p><strong>Latitude:</strong> @((SessionData.SelectedReport as Mono).Lat)</p>
-				<p><strong>Longitude:</strong> @((SessionData.SelectedReport as Mono).Lng)</p>
+            @if (SessionData.SelectedReport is MonoReport) {
+				<p><strong>Latitude:</strong> @((SessionData.SelectedReport as MonoReport).Lat)</p>
+				<p><strong>Longitude:</strong> @((SessionData.SelectedReport as MonoReport).Lng)</p>
 			}
             @if (SessionData.hosting) {
                 <!--<button type="button" class="btn btn-primary" @onclick="Edit" style="padding: 5px; margin: 5px;">Edit</button>-->
@@ -122,12 +122,12 @@
     }
     //the below method is used to show points on a map by reading and writing from a .JSON file, with mono pins
     private async Task PlaceMonoPinsFromJson() {
-        List<Mono> monos = new List<Mono>();
+        List<MonoReport> monos = new List<MonoReport>();
         monos = ReportTools.GetMonos(SessionData.Reports);
         //Do this Toby pls
         //Use dictionary/switch statement to set url to fitting icons
         string url = "images/fire.png";
-        foreach (Mono mono in monos) {
+        foreach (MonoReport mono in monos) {
             MarkerOptions options = new MarkerOptions {
                     Title = mono.Name,
                     Position = new LatLngLiteral {
@@ -171,9 +171,9 @@
     };
 
         
-        List<Poly> polys = ReportTools.GetPolys(SessionData.Reports);
+        List<PolyReport> polys = ReportTools.GetPolys(SessionData.Reports);
 
-        foreach (Poly poly in polys)
+        foreach (PolyReport poly in polys)
         {
             // Get colors based on the category of the polygon
             var (strokeColor, fillColor) = categoryColors.ContainsKey(poly.Cat)
