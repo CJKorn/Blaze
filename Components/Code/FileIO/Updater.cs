@@ -23,6 +23,10 @@ internal class Updater : IDisposable {
 	}
 
 	private async void UpdateReports(object state) {
+		if (SessionData.hosting) {
+			SessionData.Reports = ReportTools.GetReports();
+			return;
+		}
 		if (string.IsNullOrEmpty(SessionData.IP)) {
 			return;
 		}
