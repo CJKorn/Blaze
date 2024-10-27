@@ -1,5 +1,7 @@
-﻿html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+html, body {
+    font-family: 'Poppins', sans-serif; /* Apply Waze-like font */
 }
 
 a, .btn-link {
@@ -8,9 +10,16 @@ a, .btn-link {
 
 .btn-primary {
     color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    background-color: #EF626C; /* Primary button color */
+    border-color: #1861ac; /* Adjust as necessary */
+    border-radius: 25px; /* Rounded corners */
+    padding: 0.5rem 1.5rem; /* Padding for button */
+    transition: background-color 0.3s ease; /* Transition for hover effect */
 }
+
+    .btn-primary:hover {
+        background-color: #D95B6A; /* Darker shade on hover */
+    }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
@@ -37,7 +46,7 @@ h1:focus {
 }
 
 #blazor-error-ui {
-    background: lightyellow;
+    background: #F6E8EA; /* Adjusted for color scheme */
     bottom: 0;
     box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
     display: none;
@@ -68,7 +77,6 @@ h1:focus {
 .status-bar-safe-area {
     display: none;
 }
-
 
 @supports (-webkit-touch-callout: none) {
     .status-bar-safe-area {
