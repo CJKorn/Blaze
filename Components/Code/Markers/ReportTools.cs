@@ -132,4 +132,9 @@ internal class ReportTools {
         }
         return Polys;
     }
+
+    public static void DeleteReport(Report report) {
+        SessionData.Reports.Remove(report);
+        SaveReports();
+    }
 }
