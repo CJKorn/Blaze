@@ -3,24 +3,33 @@
 @using GoogleMapsComponents.Maps
 @inject NavigationManager NavigationManager
 <div class="page" style="background-color: #F6E8EA;">
-    <h1 style="text-align: center; color: #EF626C; text-decoration: underline;">Incident Map</h1>
+    <h1 style="text-align: center; color: #22181C; text-decoration: underline;">Incident Map</h1>
 
-@if (SessionData.Key != null) {
-    <div style="height:@Height">
-        <GoogleMap @ref="@_map1" Id="map1" Options="@mapOptions" Height="100%" OnAfterInit="AfterMapRender"></GoogleMap>
-    </div>
-}
-else {
-    <div style="height:@Height">
-        <h1>NO API KEY!!!</h1>
-    </div>
-}
+    @if (SessionData.Key != null) {
+        <div style="height:@Height">
+            <GoogleMap @ref="@_map1" Id="map1" Options="@mapOptions" Height="100%" OnAfterInit="AfterMapRender"></GoogleMap>
+        </div>
+    } else {
+        <div style="height:@Height">
+            <h1>NO API KEY!!!</h1>
+        </div>
+    }
 
-@if (Marker != null) {
-    <button type="button" class="btn btn-primary" @onclick="Report" style="padding: 5px; margin: 5px float: right;">Report Incident</button>
-}
+    @if (Marker != null) {
+        <button type="button" class="btn btn-primary" @onclick="Report" style="padding: 5px; margin: 5px float: right;">Report Incident</button>
+    }
+
+    @if (SessionData.SelectedReport != null) {
+        <div class="sidebar" style="position: absolute; right: 0; top: 0; width: 300px; height: 100%; background-color: #FFFFFF; border-left: 1px solid #CCCCCC; padding: 10px; margin-top: 100px;">
+            <br />
+            <h2>@SessionData.SelectedReport.Name</h2>
+            <p><strong>Title:</strong> @SessionData.SelectedReport.Name</p>
+            <p><strong>Description:</strong> @SessionData.SelectedReport.Description</p>
+            <p><strong>Category:</strong> @SessionData.SelectedReport.Cat</p>
+            <p><strong>Icon:</strong> <img src="@SessionData.SelectedReport.Icon" alt="Icon" /></p>
+        </div>
+    }
 </div>
-
 
 @code {
     private GoogleMap? _map1;
@@ -29,13 +38,10 @@ else {
     private LatLngBounds? _bounds;
     private Marker? Marker;
 
-    protected override void OnInitialized()
-    {
-        mapOptions = new MapOptions()
-            {
+    protected override void OnInitialized() {
+        mapOptions = new MapOptions() {
                 Zoom = SessionData.Zoom,
-                Center = new LatLngLiteral()
-                {
+                Center = new LatLngLiteral() {
                     Lat = SessionData.Lat,
                     Lng = SessionData.Lng
                 },
@@ -44,27 +50,30 @@ else {
         SessionData.Reports = ReportTools.GetReports();
     }
 
-    private async Task AfterMapRender()
-    {
+    private async Task AfterMapRender() {
         _bounds = await LatLngBounds.CreateAsync(_map1.JsRuntime);
         await _map1.InteropObject.AddListener("drag", RecordState);
         await _map1.InteropObject.AddListener("zoom_changed", RecordState);
         await _map1.InteropObject.AddListener("center_changed", RecordState);
         await _map1.InteropObject.AddListener<MouseEvent>("click", async (e) => await OnClick(e));
+        await _map1.InteropObject.AddListener<MouseEvent>("dblclick", async (e) => await OnDoubleClick(e));
 
         await PlacePinsFromJson();
     }
 
-    private async void RecordState()
-    {
+    private async void RecordState() {
         LatLngLiteral Position = await _map1.InteropObject.GetCenter();
         SessionData.Lat = Position.Lat;
         SessionData.Lng = Position.Lng;
         SessionData.Zoom = (int)Math.Round(await _map1.InteropObject.GetZoom());
     }
 
-    private async Task OnClick(MouseEvent e)
-    {
+    private async Task OnClick(MouseEvent e) {
+        SessionData.SelectedReport = null;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task OnDoubleClick(MouseEvent e) {
         LatLngLiteral Position = e.LatLng;
         SessionData.ClickedLat = Position.Lat;
         SessionData.ClickedLng = Position.Lng;
@@ -72,22 +81,18 @@ else {
         await AddMarker(Position);
     }
 
-    private async Task AddMarker(LatLngLiteral position)
-    {
-        if (Marker != null)
-        {
+    private async Task AddMarker(LatLngLiteral position) {
+        if (Marker != null) {
             await Marker.SetMap(null);
             Marker = null;
         }
 
-        MarkerOptions options = new MarkerOptions()
-            {
+        MarkerOptions options = new MarkerOptions() {
                 Position = position,
                 Map = _map1.InteropObject,
                 Label = "Temp",
                 Draggable = true,
-                Icon = new Icon()
-                {
+                Icon = new Icon() {
                     Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
                 }
             };
@@ -95,14 +100,12 @@ else {
         await InvokeAsync(StateHasChanged);
     }
 
-    private void Report()
-    {
+    private void Report() {
         SessionData.Clicked = true;
         NavigationManager.NavigateTo("/userinput");
     }
 
-    private async Task PlacePinsFromJson()
-    {
+    private async Task PlacePinsFromJson() {
         await PlaceMonoPinsFromJson();
         await PlacePolyPinsFromJson();
     }
@@ -110,24 +113,22 @@ else {
     private async Task PlaceMonoPinsFromJson() {
         List<Mono> monos = new List<Mono>();
         monos = ReportTools.GetMonos(SessionData.Reports);
-        foreach (Mono mono in monos)
-        {
-            MarkerOptions options = new MarkerOptions
-            {
-                Title = mono.Name,
-                Position = new LatLngLiteral
-                {
-                    Lat = mono.Lat,
-                    Lng = mono.Lng
-                },
-                Map = _map1.InteropObject,
-                Label = "Incident",
-                Icon = new Icon()
-                {
-                    Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                }
-            };
-            await Marker.CreateAsync(_map1.JsRuntime, options);
+        foreach (Mono mono in monos) {
+            MarkerOptions options = new MarkerOptions {
+                    Title = mono.Name,
+                    Position = new LatLngLiteral {
+                        Lat = mono.Lat,
+                        Lng = mono.Lng
+                    },
+                    Map = _map1.InteropObject,
+                    Label = "Incident",
+                    Icon = new Icon() {
+                        Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                    }
+                };
+            Marker marker = await Marker.CreateAsync(_map1.JsRuntime, options);
+            await marker.AddListener<MouseEvent>("click", async e => await MarkerClicked(e, marker, mono));
+            await InvokeAsync(StateHasChanged);
         }
     }
 
@@ -135,7 +136,7 @@ else {
         List<Poly> polys = ReportTools.GetPolys(SessionData.Reports);
         foreach (Poly poly in polys) {
             IEnumerable<IEnumerable<LatLngLiteral>> points = new List<IEnumerable<LatLngLiteral>> {
-            poly.LatLngLiterals
+                poly.LatLngLiterals
             };
             PolygonOptions options = new PolygonOptions {
                     Paths = points,
@@ -145,9 +146,17 @@ else {
                     FillColor = "#000000",
                     FillOpacity = (float)0.35,
                     Map = _map1.InteropObject
-            };
-            await Polygon.CreateAsync(_map1.JsRuntime, options);
+                };
+            Polygon polygon = await Polygon.CreateAsync(_map1.JsRuntime, options);
+            await polygon.AddListener<MouseEvent>("click", async e => await MarkerClicked(e, polygon, poly));
+            await InvokeAsync(StateHasChanged);
         }
     }
 
+    private async Task MarkerClicked<T>(MouseEvent e, T marker, Report report) {
+        SessionData.SelectedReport = report;
+        await InvokeAsync(StateHasChanged);
+        // SessionData.SelectedMarker = marker;
+        // NavigationManager.NavigateTo("/userinput");
+    }
 }

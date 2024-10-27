@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.IO;
+using GoogleMapsComponents.Maps;
 
 internal static class SessionData
 {
@@ -20,7 +21,10 @@ internal static class SessionData
     public static bool Clicked { get; set; }
     public static List<Report> Reports { get; set; } = new List<Report>();
     public static string debug { get; set; }
+    public static Report SelectedReport { get; set; }
+    public static Marker SelectedMarker { get; set; }
 
 
-	public static List<Location> Locations { get; private set; } = new List<Location>();
+
+    public static List<Location> Locations { get; private set; } = new List<Location>();
 }

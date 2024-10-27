@@ -1,34 +1,34 @@
 ﻿@inject AppState AppState
 
-<div style="background-color:#84DCCF;"class="top-row ps-3 navbar navbar-dark">
+<div style="background-color:#312F2F;" class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a style="color: #312F2F;" class="navbar-brand" href="">Blaze</a>
+        <a style="color: #F6E8EA;" class="navbar-brand" href="">Blaze</a>
     </div>
 </div>
 
-<input style="background-color:#84DCCF;" type="checkbox" title="Navigation menu" class="navbar-toggler" />
+<input style="background-color:#312F2F;" type="checkbox" title="Navigation menu" class="navbar-toggler" />
 
-<div style="background-color:#84DCCF;" class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+<div style="background-color:#312F2F;" class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="map" style="color: #312F2F !important;">
+            <NavLink class="nav-link" href="map" style="color: #F6E8EA !important;">
                 <span  class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Map
             </NavLink>
         </div>
         @if (AppState.Hosting) {
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="statistics" style="color: #312F2F !important;">
+                <NavLink class="nav-link" href="statistics" style="color: #F6E8EA !important;">
                     <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Statistics
                 </NavLink>
             </div>
         }
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="userinput" style="color: #312F2F !important;">
+            <NavLink class="nav-link" href="userinput" style="color: #F6E8EA !important;">
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> User Input
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="settings" style="color: #312F2F !important;">
+            <NavLink class="nav-link" href="settings" style="color: #F6E8EA !important;">
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Settings
             </NavLink>
         </div>
