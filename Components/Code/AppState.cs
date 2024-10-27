@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel;
-
+//this classed is used to keep track of the hosting status of the application and send out an alert if the hosting status changes.
 public class AppState : INotifyPropertyChanged
     //defines the public class called AppState
     //INotifyPropertyChanged interface is implemented by AppState class
