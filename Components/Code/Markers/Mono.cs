@@ -14,4 +14,11 @@ public class Mono : Report {
 
 		//Cat = cat;
 	}
+
+    public Mono(string name, string description, double lat, double lng, Category cat) : base(name, description, cat) {
+        Lat = lat;
+        Lng = lng;
+
+        //Cat = cat;
+    }
 }

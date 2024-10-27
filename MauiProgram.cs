@@ -26,14 +26,30 @@ namespace Blaze {
             builder.Services.AddSingleton<ReportTools>();
 
             String key;
+            String path = SessionData.path;
             String apiPath = SessionData.apiFilePath;
             String jsonPath = SessionData.jsonFilePath;
+            if (!Directory.Exists(path)) {
+                Directory.CreateDirectory(path);
+            }
+            // Ensure the apiPath directory exists
+            var apiDirectory = Path.GetDirectoryName(apiPath);
+            if (!string.IsNullOrEmpty(apiDirectory) && !Directory.Exists(apiDirectory)) {
+                Directory.CreateDirectory(apiDirectory);
+            }
+            // Ensure the jsonPath directory exists
+            var jsonDirectory = Path.GetDirectoryName(jsonPath);
+            if (!string.IsNullOrEmpty(jsonDirectory) && !Directory.Exists(jsonDirectory)) {
+                Directory.CreateDirectory(jsonDirectory);
+            }
+
             if (!File.Exists(apiPath)) {
                 File.WriteAllText(apiPath, "");
             }
             if (!File.Exists(jsonPath)) {
                 File.WriteAllText(jsonPath, "");
             }
+
             try {
                 Console.WriteLine(apiPath);
                 key = File.ReadAllText(apiPath).Trim();

@@ -11,4 +11,10 @@ public class Poly : Report {
 		//Icon = icon;
 		//Cat = cat;
 	}
+
+    public Poly(string name, string description, List<LatLngLiteral> latLngLiterals, Category cat) : base(name, description, cat) {
+        LatLngLiterals = latLngLiterals;
+        //Icon = icon;
+        //Cat = cat;
+    }
 }

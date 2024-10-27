@@ -29,6 +29,7 @@
     <!-- Delete before finishing -->
     <br />
     <button @onclick="TempData">Temp Data</button>
+    <button @onclick="ClearReports">Clear Reports</button>
 </div>
 @code {
     private bool apiPressed = false;
@@ -106,4 +107,8 @@
 
         ReportTools.SendReports(reports);
     }
+
+    private void ClearReports() {
+		SessionData.Reports = new List<Report>();
+	}
 }

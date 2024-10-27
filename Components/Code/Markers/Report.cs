@@ -42,6 +42,12 @@ public abstract class Report {
         Icon = icon;
     }
 
+    public Report(string name, string description, Category cat) {
+        Name = name;
+        Description = description;
+        Cat = cat;
+    }
+
     public Report(string name, string description, string icon, Category cat) {
 		Name = name;
 		Description = description;
