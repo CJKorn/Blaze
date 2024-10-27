@@ -64,7 +64,7 @@
         await _map1.InteropObject.AddListener("zoom_changed", RecordState);
         await _map1.InteropObject.AddListener("center_changed", RecordState);
         await _map1.InteropObject.AddListener<MouseEvent>("click", async (e) => await OnClick(e));
-        await _map1.InteropObject.AddListener<MouseEvent>("dblclick", async (e) => await OnDoubleClick(e));
+        await _map1.InteropObject.AddListener<MouseEvent>("rightclick", async (e) => await OnRightClick(e));
 
         await PlacePinsFromJson();
     }
@@ -81,7 +81,7 @@
         await InvokeAsync(StateHasChanged);
     }
 
-    private async Task OnDoubleClick(MouseEvent e) {
+    private async Task OnRightClick(MouseEvent e) {
         LatLngLiteral Position = e.LatLng;
         SessionData.ClickedLat = Position.Lat;
         SessionData.ClickedLng = Position.Lng;
@@ -121,6 +121,9 @@
     private async Task PlaceMonoPinsFromJson() {
         List<Mono> monos = new List<Mono>();
         monos = ReportTools.GetMonos(SessionData.Reports);
+        //Do this Toby pls
+        //Use dictionary/switch statement to set url to fitting icons
+        string url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
         foreach (Mono mono in monos) {
             MarkerOptions options = new MarkerOptions {
                     Title = mono.Name,
@@ -143,15 +146,18 @@
     private async Task PlacePolyPinsFromJson() {
         List<Poly> polys = ReportTools.GetPolys(SessionData.Reports);
         foreach (Poly poly in polys) {
+            //Do this Toby Pls
+            string strokeColor = "#000000"; //Use switch statement/dictonary or whatever to get enum and use that to set
+            string fillColor = "#000000"; //These varables to a colour thx
             IEnumerable<IEnumerable<LatLngLiteral>> points = new List<IEnumerable<LatLngLiteral>> {
                 poly.LatLngLiterals
             };
             PolygonOptions options = new PolygonOptions {
                     Paths = points,
-                    StrokeColor = "#000000",
+                    StrokeColor = strokeColor,
                     StrokeOpacity = (float)0.8,
                     StrokeWeight = 2,
-                    FillColor = "#000000",
+                    FillColor = fillColor,
                     FillOpacity = (float)0.35,
                     Map = _map1.InteropObject
                 };
