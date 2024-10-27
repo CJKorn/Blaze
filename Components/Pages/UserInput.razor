@@ -101,7 +101,7 @@
 				MapTypeId = MapTypeId.Roadmap
 			};
 	}
-
+	//this method runs after the map has rendered, and creates various listeners to check for state changes
 	private async Task AfterMapRender() {
 		_bounds = await LatLngBounds.CreateAsync(_map1.JsRuntime);
 		await _map1.InteropObject.AddListener("drag", RecordState);
@@ -115,14 +115,14 @@
 			await AddMarker(position);
 		}
 	}
-
+	//this method is used to recird the current state of the map, including the longitutde, latitude and the zoom
 	private async void RecordState() {
 		LatLngLiteral Position = await _map1.InteropObject.GetCenter();
 		SessionData.Lat = Position.Lat;
 		SessionData.Lng = Position.Lng;
 		SessionData.Zoom = (int)Math.Round(await _map1.InteropObject.GetZoom());
 	}
-
+	//the method below runs after a click occurs on teh map, and updates values accordingly, and adds a marker
 	private async Task OnClick(MouseEvent e) {
 		LatLngLiteral Position = e.LatLng;
 		SessionData.ClickedLat = Position.Lat;
@@ -130,7 +130,7 @@
 		await InvokeAsync(StateHasChanged);
 		await AddMarker(Position);
 	}
-
+	//the method below adds a marker at the current position (if one doesn't already exist), and deletes an existing marker if one exists at the current location
 	private async Task AddMarker(LatLngLiteral position) {
 		if (Marker != null) {
 			await Marker.SetMap(null);
