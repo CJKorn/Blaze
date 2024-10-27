@@ -124,23 +124,39 @@
     private async Task PlaceMonoPinsFromJson() {
         List<MonoReport> monos = new List<MonoReport>();
         monos = ReportTools.GetMonos(SessionData.Reports);
-        //Do this Toby pls
-        //Use dictionary/switch statement to set url to fitting icons
-        string url = "images/fire.png";
+
+        var categoryIcons = new Dictionary<Report.Category, string>
+        {
+            { Report.Category.Accident, "images/accident.png" },
+            { Report.Category.Fire, "images/fire.png" },
+            { Report.Category.Crime, "images/crime.png" },
+            { Report.Category.PowerOutage, "images/poweroutage.png" },
+            { Report.Category.WaterOutage, "images/wateroutage.png" },
+            { Report.Category.Pollution, "images/pollution.png" },
+            { Report.Category.WildlifeIncident, "images/wildlifeincident.png" },
+            { Report.Category.Traffic, "images/traffic.png" },
+            { Report.Category.RoadClosure, "images/roadclosure.png" },
+            { Report.Category.PublicTransit, "images/publictransit.png" },
+            { Report.Category.Flood, "images/flood.png" },
+            { Report.Category.SevereWeather, "images/severeweather.png" },
+            { Report.Category.Heatwave, "images/heatwave.png" },
+            { Report.Category.PublicGathering, "images/publicgathering.png" },
+            { Report.Category.Construction, "images/construction.png" },
+            { Report.Category.Default, "images/default.png" }
+        };
+
         foreach (MonoReport mono in monos) {
             MarkerOptions options = new MarkerOptions {
-                    Title = mono.Name,
-                    Position = new LatLngLiteral {
-                        Lat = mono.Lat,
-                        Lng = mono.Lng
-                    },
-                    Map = _map1.InteropObject,
-                    // Label = "Incident",
-
-                    Icon = new Icon() {
-                        Url = url
-                    }
-                };
+                Title = mono.Name,
+                Position = new LatLngLiteral {
+                    Lat = mono.Lat,
+                    Lng = mono.Lng
+                },
+                Map = _map1?.InteropObject,
+                Icon = new Icon() {
+                    Url = categoryIcons[mono.Cat]
+                }
+            };
             Marker marker = await Marker.CreateAsync(_map1.JsRuntime, options);
             await marker.AddListener<MouseEvent>("click", async e => await MarkerClicked(e, marker, mono));
             await InvokeAsync(StateHasChanged);
