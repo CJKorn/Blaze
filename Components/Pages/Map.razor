@@ -134,11 +134,20 @@ else {
     private async Task PlacePolyPinsFromJson() {
         List<Poly> polys = ReportTools.GetPolys(SessionData.Reports);
         foreach (Poly poly in polys) {
-            IEnumerable<IEnumerable<LatLngLiteral>> points = new List<IEnumerable<LatLngLiteral>> { poly.LatLngLiterals };
+            IEnumerable<IEnumerable<LatLngLiteral>> points = new List<IEnumerable<LatLngLiteral>> {
+            poly.LatLngLiterals
+            };
             PolygonOptions options = new PolygonOptions {
-                Paths = points
+                    Paths = points,
+                    StrokeColor = "#000000",
+                    StrokeOpacity = (float)0.8,
+                    StrokeWeight = 2,
+                    FillColor = "#000000",
+                    FillOpacity = (float)0.35,
+                    Map = _map1.InteropObject
             };
             await Polygon.CreateAsync(_map1.JsRuntime, options);
         }
     }
+
 }
