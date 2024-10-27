@@ -123,7 +123,7 @@
         monos = ReportTools.GetMonos(SessionData.Reports);
         //Do this Toby pls
         //Use dictionary/switch statement to set url to fitting icons
-        string url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+        string url = "images/fire.png";
         foreach (Mono mono in monos) {
             MarkerOptions options = new MarkerOptions {
                     Title = mono.Name,
@@ -132,9 +132,9 @@
                         Lng = mono.Lng
                     },
                     Map = _map1.InteropObject,
-                    Label = "Incident",
+                    // Label = "Incident",
                     Icon = new Icon() {
-                        Url = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+                        Url = url
                     }
                 };
             Marker marker = await Marker.CreateAsync(_map1.JsRuntime, options);
