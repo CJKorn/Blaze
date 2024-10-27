@@ -20,13 +20,21 @@
     }
 
     @if (SessionData.SelectedReport != null) {
-        <div class="sidebar" style="position: absolute; right: 0; top: 0; width: 300px; height: 100%; background-color: #FFFFFF; border-left: 1px solid #CCCCCC; padding: 10px; margin-top: 100px;">
+        <div class="sidebar" style="position: absolute; right: 0; top: 0; width: 300px; height: 100%; background-color: #FFFFFF; border-left: 1px solid #CCCCCC; padding: 10px; padding: 30px;">
             <br />
             <h2>@SessionData.SelectedReport.Name</h2>
             <p><strong>Title:</strong> @SessionData.SelectedReport.Name</p>
             <p><strong>Description:</strong> @SessionData.SelectedReport.Description</p>
             <p><strong>Category:</strong> @SessionData.SelectedReport.Cat</p>
-            <p><strong>Icon:</strong> <img src="@SessionData.SelectedReport.Icon" alt="Icon" /></p>
+            <!-- <p><strong>Icon:</strong> <img src="@SessionData.SelectedReport.Icon" alt="Icon" /></p> -->
+            @if (SessionData.SelectedReport is Mono) {
+				<p><strong>Latitude:</strong> @((SessionData.SelectedReport as Mono).Lat)</p>
+				<p><strong>Longitude:</strong> @((SessionData.SelectedReport as Mono).Lng)</p>
+			}
+            @if (SessionData.hosting) {
+                <!--<button type="button" class="btn btn-primary" @onclick="Edit" style="padding: 5px; margin: 5px;">Edit</button>-->
+				<button type="button" class="btn btn-primary" @onclick="DeleteReport" style="padding: 5px; margin: 5px;">Delete</button>
+            }
         </div>
     }
 </div>
@@ -159,4 +167,11 @@
         // SessionData.SelectedMarker = marker;
         // NavigationManager.NavigateTo("/userinput");
     }
+
+    private void DeleteReport() {
+		ReportTools.DeleteReport(SessionData.SelectedReport);
+		SessionData.SelectedReport = null;
+		NavigationManager.NavigateTo("/map");
+        InvokeAsync(StateHasChanged);
+	}
 }
