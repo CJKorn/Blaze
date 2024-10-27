@@ -35,13 +35,13 @@ public abstract class Report {
         Description = "";
         Icon = "";
     }
-
+    //constructor for the report without the category
     public Report(string name, string description, string icon) {
         Name = name;
         Description = description;
         Icon = icon;
     }
-
+    //constructor for the report with all components
     public Report(string name, string description, string icon, Category cat) {
 		Name = name;
 		Description = description;
@@ -60,7 +60,7 @@ public abstract class Report {
         Description = "";
         Icon = "";
     }
-
+    //to string method for the report, that prints out the Name and the Description of the report
     public override string ToString() {
         return $"{Name} {Description}";
     }
