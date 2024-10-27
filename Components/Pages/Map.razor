@@ -1,4 +1,5 @@
 ﻿@page "/map"
+<!--defines the elements and styles for the Map page-->
 @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
 @inject NavigationManager NavigationManager
@@ -14,7 +15,7 @@
             <h1>NO API KEY!!!</h1>
         </div>
     }
-
+    <!--determines if a marker exists and only shows the button if there is a valid marker-->
     @if (Marker != null) {
         <button type="button" class="btn btn-primary" @onclick="Report" style="padding: 5px; margin: 5px float: right;">Report Incident</button>
     }
@@ -45,7 +46,7 @@
     private string Height = "500px";
     private LatLngBounds? _bounds;
     private Marker? Marker;
-
+    //this method runs when the page is first initialised, and defines a new MapOptions object, that holds the "current settings" of the map, and also gets the reports
     protected override void OnInitialized() {
         mapOptions = new MapOptions() {
                 Zoom = SessionData.Zoom,
@@ -57,7 +58,7 @@
             };
         SessionData.Reports = ReportTools.GetReports();
     }
-
+    //runs after the map has been rendered and creates listeners, that determine when things change.
     private async Task AfterMapRender() {
         _bounds = await LatLngBounds.CreateAsync(_map1.JsRuntime);
         await _map1.InteropObject.AddListener("drag", RecordState);
@@ -68,14 +69,14 @@
 
         await PlacePinsFromJson();
     }
-
+    //method below is used to record the current state of the map, particularly its position, and zoom
     private async void RecordState() {
         LatLngLiteral Position = await _map1.InteropObject.GetCenter();
         SessionData.Lat = Position.Lat;
         SessionData.Lng = Position.Lng;
         SessionData.Zoom = (int)Math.Round(await _map1.InteropObject.GetZoom());
     }
-
+    //the below method runs when the map is click, and makes the selected report null
     private async Task OnClick(MouseEvent e) {
         SessionData.SelectedReport = null;
         await InvokeAsync(StateHasChanged);
@@ -88,7 +89,7 @@
         await InvokeAsync(StateHasChanged);
         await AddMarker(Position);
     }
-
+    //the method below creates and adds a new marker on the map if there isn't one in the current position alredy
     private async Task AddMarker(LatLngLiteral position) {
         if (Marker != null) {
             await Marker.SetMap(null);
@@ -107,17 +108,17 @@
         Marker = await Marker.CreateAsync(_map1.JsRuntime, options);
         await InvokeAsync(StateHasChanged);
     }
-
+    //runs when the report button is pressed, and navigates to the UserInput page.
     private void Report() {
         SessionData.Clicked = true;
         NavigationManager.NavigateTo("/userinput");
     }
-
+    //the method below calls two other methods that are located within this class, to place both mono and poly pins from the .JSON
     private async Task PlacePinsFromJson() {
         await PlaceMonoPinsFromJson();
         await PlacePolyPinsFromJson();
     }
-
+    //the below method is used to show points on a map by reading and writing from a .JSON file, with mono pins
     private async Task PlaceMonoPinsFromJson() {
         List<Mono> monos = new List<Mono>();
         monos = ReportTools.GetMonos(SessionData.Reports);
@@ -142,7 +143,7 @@
             await InvokeAsync(StateHasChanged);
         }
     }
-
+    //shows points on the map by reading and writing from a .JSON file, with poly pons
     private async Task PlacePolyPinsFromJson() {
         List<Poly> polys = ReportTools.GetPolys(SessionData.Reports);
         foreach (Poly poly in polys) {
@@ -166,14 +167,14 @@
             await InvokeAsync(StateHasChanged);
         }
     }
-
+    //this method runs when the marker is clicked, and updates SessionData;
     private async Task MarkerClicked<T>(MouseEvent e, T marker, Report report) {
         SessionData.SelectedReport = report;
         await InvokeAsync(StateHasChanged);
         // SessionData.SelectedMarker = marker;
         // NavigationManager.NavigateTo("/userinput");
     }
-
+    //the method below is used to delete a pre-existing report and removes it from SessionData, and returns to the Map page.
     private void DeleteReport() {
 		ReportTools.DeleteReport(SessionData.SelectedReport);
 		SessionData.SelectedReport = null;
