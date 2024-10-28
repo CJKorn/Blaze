@@ -23,4 +23,12 @@
     public static int GetHourCount(int hour) {
         return hourlyCounts.ContainsKey(hour) ? hourlyCounts[hour] : 0;
     }
+
+    public static void ReportUpload() {
+        //
+    }
+
+    public static void GetReq() {
+        //
+    }
 }

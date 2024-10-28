@@ -92,6 +92,7 @@ namespace Blaze {
                     ctx.Response.ContentType = "application/json";
                     await ctx.SendStringAsync(json, "application/json", System.Text.Encoding.UTF8);
                     Stat.users++;
+                    Stat.GetReq();
                 }))
 		        .WithModule(new ActionModule("/report", HttpVerbs.Post, async ctx => {
 			        // Receive JSON data via POST request
@@ -105,7 +106,8 @@ namespace Blaze {
 					// Respond with a success message
 					ctx.Response.ContentType = "application/json";
 			        await ctx.SendStringAsync("{\"status\":\"received\"}", "application/json", System.Text.Encoding.UTF8);
-		}));
+                    Stat.ReportUpload();
+                }));
 
 			Task.Run(() => server.RunAsync());
         }
