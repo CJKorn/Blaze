@@ -91,6 +91,7 @@ namespace Blaze {
                     string json = await File.ReadAllTextAsync(SessionData.jsonFilePath);
                     ctx.Response.ContentType = "application/json";
                     await ctx.SendStringAsync(json, "application/json", System.Text.Encoding.UTF8);
+                    Stat.users++;
                 }))
 		        .WithModule(new ActionModule("/report", HttpVerbs.Post, async ctx => {
 			        // Receive JSON data via POST request

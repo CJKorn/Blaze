@@ -6,18 +6,18 @@
     
     <div style="display: flex; justify-content: space-evenly; margin-top: 20px;">
         <div style="background-color: #D4A5A5; padding: 20px; border-radius: 10px; text-align: center;">
-            <h4>Estimated Connected Users</h4>
-            <p style="font-size: 48px;">1234</p>
+            <h4>Est Connected Users</h4>
+            <p style="font-size: 48px;">@userCount</p>
         </div>
         <div style="background-color: #A5D4A5; padding: 20px; border-radius: 10px; text-align: center;">
             <h4>Number of Markers</h4>
             <p style="font-size: 48px;">@ReportNumber</p>
         </div>
     </div>
-
+    <br>
     <h4>Get request rate</h4>
     <LineChart @ref="GRR" />
-
+    <br>
     <h4>Reports per hour</h4>
     <LineChart @ref="RPH" />
 </div>
@@ -25,28 +25,77 @@
 @code {
     private LineChart GRR = default!;
     private LineChart RPH = default!;
-    private List<ChartData> GetRequestRateData { get; set; }
-    private List<ChartData> ReportsPerHourData { get; set; }
+    private LineChartOptions lineChartOptions = default!;
+    private ChartData chartDataGRR = default!;
+    private ChartData chartDataRPH = default!;
     private int ReportNumber => SessionData.Reports.Count;
-    protected override void OnInitialized()
-    {
-        // Initialize your chart data here
-        GetRequestRateData = new List<ChartData>
-        {
-            new ChartData { Time = DateTime.Now.AddHours(-1), Value = 10 },
-            new ChartData { Time = DateTime.Now, Value = 20 }
-        };
+    private int userCount => Stat.usersOutput;
+    private Random random = new();
 
-        ReportsPerHourData = new List<ChartData>
-        {
-            new ChartData { Time = DateTime.Now.AddHours(-1), Value = 5 },
-            new ChartData { Time = DateTime.Now, Value = 15 }
-        };
+    protected override void OnInitialized() {
+        // Set up options for both charts
+        lineChartOptions = new LineChartOptions {
+                IndexAxis = "x",
+                Interaction = new Interaction { Mode = InteractionMode.Index, Intersect = false },
+                Responsive = true,
+            };
+
+        // Initialize data for each chart with random values
+        chartDataGRR = new ChartData {
+                Labels = GetDefaultDataLabels(6),
+                Datasets = GetDefaultDataSets(1) // One dataset for GRR
+            };
+
+        chartDataRPH = new ChartData {
+                Labels = GetDefaultDataLabels(6),
+                Datasets = GetDefaultDataSets(1) // One dataset for RPH
+            };
     }
 
-    public class ChartData
-    {
-        public DateTime Time { get; set; }
-        public int Value { get; set; }
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        if (firstRender) {
+            await GRR.InitializeAsync(chartDataGRR, lineChartOptions);
+            await RPH.InitializeAsync(chartDataRPH, lineChartOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private List<IChartDataset> GetDefaultDataSets(int numberOfDatasets) {
+        var datasets = new List<IChartDataset>();
+
+        for (var index = 0; index < numberOfDatasets; index++) {
+            datasets.Add(GetRandomLineChartDataset());
+        }
+
+        return datasets;
+    }
+
+    private LineChartDataset GetRandomLineChartDataset() {
+        var color = ColorUtility.CategoricalTwelveColors[random.Next(12)].ToColor();
+
+        return new LineChartDataset {
+                Label = "Number",
+                Data = GetRandomData(6),
+                BackgroundColor = color.ToRgbaString(),
+                BorderColor = color.ToRgbString(),
+                PointRadius = new List<double> { 5 },
+                PointHoverRadius = new List<double> { 8 },
+            };
+    }
+
+    private List<double?> GetRandomData(int count) {
+        var data = new List<double?>();
+        for (var i = 0; i < count; i++) {
+            data.Add(random.Next(200)); // Generates random values up to 200
+        }
+        return data;
+    }
+
+    private List<string> GetDefaultDataLabels(int numberOfLabels) {
+        var labels = new List<string>();
+        for (var i = 0; i < numberOfLabels; i++) {
+            labels.Add($"Label {i + 1}");
+        }
+        return labels;
     }
 }
