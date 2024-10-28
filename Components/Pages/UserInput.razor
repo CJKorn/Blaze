@@ -64,11 +64,13 @@
 	UserInputModel userInput = new UserInputModel();
 	private bool isPolyMode = false;
 	private bool isSubmitted = false;
-	private GoogleMapsComponents.GoogleMap _map1;
-	private MapOptions mapOptions;
+	private GoogleMapsComponents.GoogleMap? _map1;
+	private MapOptions? mapOptions;
 	private string Height = "300px";
-	private LatLngBounds _bounds;
-	private Marker Marker;
+	private LatLngBounds? _bounds;
+	private Marker? Marker;
+	private Polygon? _polygon;
+	private List<LatLngLiteral> _path = new List<LatLngLiteral>();
 
 	//defines the getters and setters to be default for both the Incident and its Description
 	public class UserInputModel
@@ -78,17 +80,40 @@
 		public Report.Category Type { get; set; }
 	}
 	//the method below creates a new report object when a user submits a report, and changes the value of a boolean to true.
-	private void HandleSubmit()
+	private async Task HandleSubmit()
 	{
-		Report report = new MonoReport(
-			userInput.Incident,
-			userInput.Description,
-			SessionData.ClickedLat,
-			SessionData.ClickedLng,
-			userInput.Type
-		);
+		Report report;
+		if (!isPolyMode) {
+			if (Marker == null) {
+				return;
+			}
+			report = new MonoReport(
+				userInput.Incident,
+				userInput.Description,
+				SessionData.ClickedLat,
+				SessionData.ClickedLng,
+				userInput.Type
+			);
+		}
+		else {
+			if (_polygon == null) {
+				return;
+			}
+			var path = await _polygon.GetPath();
+			report = new PolyReport(
+				userInput.Incident,
+				userInput.Description,
+				path.ToList(),
+				userInput.Type
+			);
+		}
 		// SessionData.Reports.Add(report);
-		ReportTools.SendReports(report);
+		if (SessionData.hosting) {
+			ReportTools.AddReport(report);
+		}
+		else {
+			ReportTools.SendReports(report);
+		}
 
 		// Set the flag to show submission message
 		isSubmitted = true;
@@ -130,8 +155,25 @@
 		LatLngLiteral Position = e.LatLng;
 		SessionData.ClickedLat = Position.Lat;
 		SessionData.ClickedLng = Position.Lng;
-		await InvokeAsync(StateHasChanged);
-		await AddMarker(Position);
+		if (!isPolyMode) {
+			await InvokeAsync(StateHasChanged);
+			await AddMarker(Position);
+		}
+		else {
+			_path.Add(Position);
+			_path.Add(e.LatLng);
+
+			if (_polygon != null) {
+				await _polygon.SetPath(_path);
+			}
+
+			var bounds = new LatLngBoundsLiteral() {
+					East = _path[1].Lng,
+					North = _path[0].Lat,
+					South = _path[1].Lat,
+					West = _path[0].Lng
+			};
+		}
 	}
 	//the method below adds a marker at the current position (if one doesn't already exist), and deletes an existing marker if one exists at the current location
 	private async Task AddMarker(LatLngLiteral position) {
@@ -154,7 +196,34 @@
 	}
 
 	// Method to toggle poly mode
-	private void TogglePolyMode() {
-		//
+	private async Task TogglePolyMode() {
+		if (!isPolyMode) {
+			await StartDrawingPolygon();
+		} else {
+			EndDrawingPolygon();
+		}
+	}
+
+	private async Task StartDrawingPolygon() {
+		if (Marker != null) {
+			await Marker.SetMap(null);
+			Marker = null;
+		}
+		if (_map1?.JsRuntime != null) {
+			_polygon = await Polygon.CreateAsync(_map1.JsRuntime, new PolygonOptions() {
+					Draggable = true,
+					Editable = true,
+					Map = _map1.InteropObject
+				});
+		}
+		_path.Clear();
+	}
+
+	private void EndDrawingPolygon() {
+		if (_polygon != null) {
+			_polygon.SetMap(null);
+		}
+		_polygon = null;
+		_path.Clear();
 	}
 }
