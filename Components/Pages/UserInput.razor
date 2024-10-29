@@ -136,6 +136,7 @@
 		await _map1.InteropObject.AddListener("zoom_changed", RecordState);
 		await _map1.InteropObject.AddListener("center_changed", RecordState);
 		await _map1.InteropObject.AddListener<MouseEvent>("click", async (e) => await OnClick(e));
+		await _map1.InteropObject.AddListener<MouseEvent>("rightclick", async (e) => await OnClick(e));
 
 		if (SessionData.Clicked == true) {
 			LatLngLiteral position = ReportTools.LatLng(SessionData.ClickedLat, SessionData.ClickedLng);

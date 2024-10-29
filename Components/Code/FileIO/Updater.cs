@@ -16,6 +16,7 @@ internal class Updater : IDisposable {
 	}
 
 	public void Start() {
+		Stat.Start();
 		if (SessionData.hosting) {
 			return;
 		}

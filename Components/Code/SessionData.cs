@@ -29,5 +29,5 @@ internal static class SessionData
 
 
 
-    public static List<Location> Locations { get; private set; } = new List<Location>();
+    //public static List<Location> Locations { get; private set; } = new List<Location>();
 }
