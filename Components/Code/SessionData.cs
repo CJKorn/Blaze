@@ -6,6 +6,7 @@ using GoogleMapsComponents.Maps;
 internal static class SessionData
 {
     //below code declares static string data elements that correspond with the file path for the .JSON file and the API file.
+    //this class is merely used to store data in a static form, so that it can be accessed from anywhere by simply calling the class
     public static string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
     public static string jsonFilePath = Path.Combine(path, "Blaze/data.json");
     public static string apiFilePath = Path.Combine(path, "Blaze/keys.apikeys");
