@@ -27,7 +27,8 @@ public class AppState : INotifyPropertyChanged
 	public List<Report> Reports {
 		get {
 			//NotifyPropertyChanged(nameof(Reports));
-			return _reports;
+			_reports = SessionData.Reports;
+            return _reports;
 		}
 		set {
 			_reports = value;

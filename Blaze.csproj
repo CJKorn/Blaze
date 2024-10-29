@@ -41,6 +41,7 @@
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
 		<AppInstallerUri>https://github.com/CJKorn/Blaze</AppInstallerUri>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+		<AppxPackageDir>C:\Users\cjkor\Desktop\UTS\.Net\Projects\Assignment 2\Blaze\BlazePublished\</AppxPackageDir>
 	</PropertyGroup>
 
 	<ItemGroup>

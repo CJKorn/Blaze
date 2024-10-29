@@ -31,6 +31,7 @@ internal class ReportTools {
     public static void AddReport(Report marker) {
         SessionData.Reports.Add(marker);
         SaveReports();
+        
     }
     //saves the reports to the .JSON file and doesnt take any parameters
     public static void SaveReports() {
