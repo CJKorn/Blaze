@@ -1,9 +1,8 @@
-﻿<!--this file declares the statistics interface, including various elements such as the number of incidents occurring and connected users.-->
-@page "/statistics"
+﻿@page "/statistics"
 
 <div class="page" style="background-color: #F6E8EA;">
     <h3 style="color: #EF626C; text-align: center; text-decoration: underline;">Statistics</h3>
-    
+
     <div style="display: flex; justify-content: space-evenly; margin-top: 20px;">
         <div style="background-color: #D4A5A5; padding: 20px; border-radius: 10px; text-align: center;">
             <h4>Est Connected Users</h4>
@@ -30,7 +29,6 @@
     private ChartData chartDataRPH = default!;
     private int ReportNumber => SessionData.Reports.Count;
     private int userCount => Stat.usersOutput;
-    private Random random = new();
 
     protected override void OnInitialized() {
         // Set up options for both charts
@@ -40,15 +38,15 @@
                 Responsive = true,
             };
 
-        // Initialize data for each chart with random values
+        // Initialize data for each chart with actual values
         chartDataGRR = new ChartData {
                 Labels = GetDefaultDataLabels(6),
-                Datasets = GetDefaultDataSets(1) // One dataset for GRR
+                Datasets = GetGetRequestDataSets(1) // One dataset for GRR
             };
 
         chartDataRPH = new ChartData {
                 Labels = GetDefaultDataLabels(6),
-                Datasets = GetDefaultDataSets(1) // One dataset for RPH
+                Datasets = GetReportUploadDataSets(1) // One dataset for RPH
             };
     }
 
@@ -60,22 +58,32 @@
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private List<IChartDataset> GetDefaultDataSets(int numberOfDatasets) {
+    private List<IChartDataset> GetGetRequestDataSets(int numberOfDatasets) {
         var datasets = new List<IChartDataset>();
 
         for (var index = 0; index < numberOfDatasets; index++) {
-            datasets.Add(GetRandomLineChartDataset());
+            datasets.Add(GetGetRequestLineChartDataset());
         }
 
         return datasets;
     }
 
-    private LineChartDataset GetRandomLineChartDataset() {
-        var color = ColorUtility.CategoricalTwelveColors[random.Next(12)].ToColor();
+    private List<IChartDataset> GetReportUploadDataSets(int numberOfDatasets) {
+        var datasets = new List<IChartDataset>();
+
+        for (var index = 0; index < numberOfDatasets; index++) {
+            datasets.Add(GetReportUploadLineChartDataset());
+        }
+
+        return datasets;
+    }
+
+    private LineChartDataset GetGetRequestLineChartDataset() {
+        var color = ColorUtility.CategoricalTwelveColors[0].ToColor();
 
         return new LineChartDataset {
-                Label = "Number",
-                Data = GetRandomData(6),
+                Label = "Get Requests",
+                Data = GetGetRequestData(6),
                 BackgroundColor = color.ToRgbaString(),
                 BorderColor = color.ToRgbString(),
                 PointRadius = new List<double> { 5 },
@@ -83,10 +91,33 @@
             };
     }
 
-    private List<double?> GetRandomData(int count) {
+    private LineChartDataset GetReportUploadLineChartDataset() {
+        var color = ColorUtility.CategoricalTwelveColors[1].ToColor();
+
+        return new LineChartDataset {
+                Label = "Report Uploads",
+                Data = GetReportUploadData(6),
+                BackgroundColor = color.ToRgbaString(),
+                BorderColor = color.ToRgbString(),
+                PointRadius = new List<double> { 5 },
+                PointHoverRadius = new List<double> { 8 },
+            };
+    }
+
+    private List<double?> GetGetRequestData(int count) {
         var data = new List<double?>();
+        int currentHour = Stat.GetCurrentHour();
         for (var i = 0; i < count; i++) {
-            data.Add(random.Next(200)); // Generates random values up to 200
+            data.Add(Stat.GetGetRequestCount(currentHour - i));
+        }
+        return data;
+    }
+
+    private List<double?> GetReportUploadData(int count) {
+        var data = new List<double?>();
+        int currentHour = Stat.GetCurrentHour();
+        for (var i = 0; i < count; i++) {
+            data.Add(Stat.GetReportUploadCount(currentHour - i));
         }
         return data;
     }
@@ -94,7 +125,7 @@
     private List<string> GetDefaultDataLabels(int numberOfLabels) {
         var labels = new List<string>();
         for (var i = 0; i < numberOfLabels; i++) {
-            labels.Add($"Label {i + 1}");
+            labels.Add($"Hour {i + 1}");
         }
         return labels;
     }
