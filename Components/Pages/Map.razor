@@ -2,6 +2,7 @@
 <!--defines the elements and styles for the Map page-->
 @using GoogleMapsComponents
 @using GoogleMapsComponents.Maps
+@inject AppState AppState
 
 @inject NavigationManager NavigationManager
 <div class="page" style="background-color: #F6E8EA;">
@@ -59,6 +60,11 @@
                 MapTypeId = MapTypeId.Roadmap
             };
         SessionData.Reports = ReportTools.GetReports();
+        AppState.PropertyChanged += (sender, args) => {
+            if (args.PropertyName == nameof(AppState.Reports)) {
+                InvokeAsync(StateHasChanged);
+            }
+        };
     }
     //runs after the map has been rendered and creates listeners, that determine when things change.
     private async Task AfterMapRender() {

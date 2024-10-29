@@ -2,9 +2,10 @@
     private static readonly Dictionary<int, int> hourlyCounts = new Dictionary<int, int>();
     public static int users { get; set; } = 0;
     public static int usersOutput { get; set; } = 0;
+    private static Timer timer;
 
     public static void Start() {
-        Timer timer = new Timer(UpdateUsers, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
+        timer = new Timer(UpdateUsers, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
     }
 
     public static void UpdateUsers(object state) {

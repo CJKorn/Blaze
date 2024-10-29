@@ -1,10 +1,11 @@
 ﻿@inherits LayoutComponentBase
 <!--this class defines the main page layout for all the pages so they have the same layout without needing to repeat code-->
 <div class="page" style="background-color: #F6E8EA;">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
+    @if (SessionData.signedIn) {
+        <div class="sidebar">
+            <NavMenu />
+        </div>
+    }
     <main>
         <!--</div>-->
         <article class="content px-4">
