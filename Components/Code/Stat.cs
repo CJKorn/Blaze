@@ -11,7 +11,7 @@
 
     public static void UpdateUsers(object state) {
         usersOutput = users;
-        users = 10;
+        users = 0;
     }
 
     public static void ReportUpload() {

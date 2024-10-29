@@ -107,7 +107,7 @@
     private List<double?> GetGetRequestData(int count) {
         var data = new List<double?>();
         int currentHour = Stat.GetCurrentHour();
-        for (var i = 0; i < count; i++) {
+        for (var i = count - 1; i >= 0; i--) {
             data.Add(Stat.GetGetRequestCount(currentHour - i));
         }
         return data;
@@ -116,7 +116,7 @@
     private List<double?> GetReportUploadData(int count) {
         var data = new List<double?>();
         int currentHour = Stat.GetCurrentHour();
-        for (var i = 0; i < count; i++) {
+        for (var i = count - 1; i >= 0; i--) {
             data.Add(Stat.GetReportUploadCount(currentHour - i));
         }
         return data;
@@ -125,7 +125,11 @@
     private List<string> GetDefaultDataLabels(int numberOfLabels) {
         var labels = new List<string>();
         for (var i = 0; i < numberOfLabels; i++) {
-            labels.Add($"Hour {i + 1}");
+            if (i == numberOfLabels - 1) {
+				labels.Add("Now");
+				continue;
+			}
+            labels.Add($"-{numberOfLabels - i - 1} Hours");
         }
         return labels;
     }
