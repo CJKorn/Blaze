@@ -52,7 +52,9 @@
 	</EditForm>
 
 	@if (isSubmitted) {
-		<p><br />Form submitted successfully! Incident: @userInput.Incident <br /> Incident Description: @userInput.Description</p>
+		<p><br />Form submitted successfully! Incident: @IncidentDisplayName <br /> Incident Description: @IncidentDisplayDescription</p>
+		//is submitted now needs to be changed back to false
+		
 	}
 </div>
 
@@ -71,6 +73,8 @@
 	private Marker? Marker;
 	private Polygon? _polygon;
 	private List<LatLngLiteral> _path = new List<LatLngLiteral>();
+	private string IncidentDisplayName;
+	private string IncidentDisplayDescription;
 
 	//defines the getters and setters to be default for both the Incident and its Description
 	public class UserInputModel
@@ -116,6 +120,8 @@
 		}
 
 		// Set the flag to show submission message
+		IncidentDisplayName = userInput.Incident;
+		IncidentDisplayDescription = userInput.Description;
 		isSubmitted = true;
 	}
 	//the method below runs upon first initialising the interface and it defines a new object of type mapObjects that determines zoom, longitude and latitude.
@@ -129,6 +135,7 @@
 				MapTypeId = MapTypeId.Roadmap
 			};
 	}
+
 	//this method runs after the map has rendered, and creates various listeners to check for state changes
 	private async Task AfterMapRender() {
 		_bounds = await LatLngBounds.CreateAsync(_map1.JsRuntime);
@@ -151,7 +158,7 @@
 		SessionData.Lng = Position.Lng;
 		SessionData.Zoom = (int)Math.Round(await _map1.InteropObject.GetZoom());
 	}
-	//the method below runs after a click occurs on teh map, and updates values accordingly, and adds a marker
+	//the method below runs after a click occurs on the map, and updates values accordingly, and adds a marker
 	private async Task OnClick(MouseEvent e) {
 		LatLngLiteral Position = e.LatLng;
 		SessionData.ClickedLat = Position.Lat;
