@@ -14,7 +14,7 @@ public class AppState : INotifyPropertyChanged
 	//the method below, is used to determine if the status of _hosting changes. if this is the case, the NotifyPropertyChanged method is called
 	public bool Hosting {
 		get {
-			NotifyPropertyChanged(nameof(Hosting));
+			//NotifyPropertyChanged(nameof(Hosting));
 			return _hosting;
 		}
 		set {
@@ -26,7 +26,7 @@ public class AppState : INotifyPropertyChanged
 	//the method below, is used to determine if the status of _reports changes. if this is the case, the NotifyPropertyChanged method is called
 	public List<Report> Reports {
 		get {
-			NotifyPropertyChanged(nameof(Reports));
+			//NotifyPropertyChanged(nameof(Reports));
 			return _reports;
 		}
 		set {
