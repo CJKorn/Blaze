@@ -39,7 +39,9 @@
 </div>
 
 @code {
-    private string Profile => AppState.Hosting ? "Hosting" : "Not Hosting";
+    //this code creates a listens for when AppState sends out a message, and refreshes the page if a valid change is observed
+    //this is to hide and reveal the statistics page
+    //private string Profile => AppState.Hosting ? "Hosting" : "Not Hosting";
 
     protected override void OnInitialized() {
         AppState.PropertyChanged += (sender, args) => {
