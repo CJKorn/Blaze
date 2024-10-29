@@ -51,12 +51,12 @@ namespace Blaze {
             }
 
             try {
-                Console.WriteLine(apiPath);
+                //Console.WriteLine(apiPath);
                 key = File.ReadAllText(apiPath).Trim();
                 builder.Services.AddBlazorGoogleMaps(key);
                 builder.Services.AddScoped(sp => new HttpClient { }); //https://stackoverflow.com/questions/72427377/create-and-use-httpclient-in-a-net-maui-app
                 SessionData.Key = key;
-                Console.WriteLine(key);
+                //Console.WriteLine(key);
             }
             catch (Exception e) {
                 Console.WriteLine("Error reading API key at: " + apiPath + " " + e.Message);
