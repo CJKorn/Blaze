@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Net;
 
 internal class EIOHTTPServer : IHTTPServer {
+    //the method below is sued to start the HTTP Server for the host device
     public void StartHttpServer() {
         string hostIpAddress = GetHostIpAddress();
         SessionData.myIP = hostIpAddress + ":9696";
@@ -41,7 +42,7 @@ internal class EIOHTTPServer : IHTTPServer {
 
         Task.Run(() => server.RunAsync());
     }
-
+    //the method below is used to get the IP Address of the Host Device, which can be given to other users in order to join a server.
     private static string GetHostIpAddress() {
         var ipAddress = Dns.GetHostEntry(Dns.GetHostName())
             .AddressList
