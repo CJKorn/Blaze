@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-
+//this class is used to download a string from a URL if it is a valid URL and returns an error message otherwise.
 public class Downloader {
     private readonly HttpClient _httpClient;
     

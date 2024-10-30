@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-
+//this class is used to read and write to/from teh HSON files
 public class JsonReadWrite : IReadWrite {
     private JsonSerializerOptions GetSerializerOptions() {
         var options = new JsonSerializerOptions {
@@ -12,18 +12,18 @@ public class JsonReadWrite : IReadWrite {
         };
         return options;
     }
-
+    //the method below is used to serialize a file, by transforming the file into a json file.
     public void SerializeFile<T>(List<T> data, string filePath) {
         var options = GetSerializerOptions();
         string json = JsonSerializer.Serialize(data, options);
         File.WriteAllText(filePath, json);
     }
-
+    //the method below is used to serialize a string, by converting a list of data into a json string
     public string SerializeString<T>(List<T> data) {
         var options = GetSerializerOptions();
         return JsonSerializer.Serialize(data, options);
     }
-
+    //this method is used to deserialize a file, by converting the contents of the json file into a string, then converting the string itself back into a list
     public List<T> DeserializeFile<T>(string filePath) {
         if (!File.Exists(filePath)) {
             return new List<T>();
@@ -36,7 +36,7 @@ public class JsonReadWrite : IReadWrite {
 
         return DeserializeString<T>(json);
     }
-
+    //this method is used to deserialize a string, by converting the json string back into a List
     public List<T> DeserializeString<T>(string json) {
         if (string.IsNullOrEmpty(json)) {
             return new List<T>();
