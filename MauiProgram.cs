@@ -10,22 +10,21 @@ using System.Net.Sockets;
 
 namespace Blaze {
     public static class MauiProgram {
-        //this method is used to cerate the application itself
         public static MauiApp CreateMauiApp() {
-            //this initilalizes the builder
+            //code below calls a method to create and configure the application itself
             var builder = MauiApp.CreateBuilder();
             builder
-                .UseMauiApp<App>() //registers the main application class
-                .ConfigureFonts(fonts => { //configures the fonts to be used within the iinterfaces
+                .UseMauiApp<App>() //uses the main app class (default)
+                .ConfigureFonts(fonts => { //configures the fonts that will be used within the application
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
-            //the code below defines the services that the application depends on for functionality
+            //the code below is the defining of various services that the applicationd depends on so that there is only one instance of them
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddSingleton<AppState>();
             builder.Logging.AddDebug();
             builder.Services.AddSingleton<Updater>();
             builder.Services.AddSingleton<ReportTools>();
-            //defines various strings tha are used for the locations of files and the api key.
+            //code below defines various strings that are used to set up the file paths, and the api key
             String key;
             String path = SessionData.path;
             String apiPath = SessionData.apiFilePath;
@@ -62,7 +61,7 @@ namespace Blaze {
             catch (Exception e) {
                 Console.WriteLine("Error reading API key at: " + apiPath + " " + e.Message);
             }
-            //sets the initial latitude, longtitude and zoom of the map
+            //sets the longtitude, latitude, and zoom for the map for when the application first starts
             SessionData.Lat = -33.883239;
             SessionData.Lng = 151.200497;
             SessionData.Zoom = 12;
