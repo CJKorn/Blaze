@@ -10,21 +10,22 @@ using System.Net.Sockets;
 
 namespace Blaze {
     public static class MauiProgram {
+        //this method is used to cerate the application itself
         public static MauiApp CreateMauiApp() {
-            
+            //this initilalizes the builder
             var builder = MauiApp.CreateBuilder();
             builder
-                .UseMauiApp<App>()
-                .ConfigureFonts(fonts => {
+                .UseMauiApp<App>() //registers the main application class
+                .ConfigureFonts(fonts => { //configures the fonts to be used within the iinterfaces
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
-
+            //the code below defines the services that the application depends on for functionality
             builder.Services.AddMauiBlazorWebView();
             builder.Services.AddSingleton<AppState>();
             builder.Logging.AddDebug();
             builder.Services.AddSingleton<Updater>();
             builder.Services.AddSingleton<ReportTools>();
-
+            //defines various strings tha are used for the locations of files and the api key.
             String key;
             String path = SessionData.path;
             String apiPath = SessionData.apiFilePath;
@@ -61,7 +62,7 @@ namespace Blaze {
             catch (Exception e) {
                 Console.WriteLine("Error reading API key at: " + apiPath + " " + e.Message);
             }
-
+            //sets the initial latitude, longtitude and zoom of the map
             SessionData.Lat = -33.883239;
             SessionData.Lng = 151.200497;
             SessionData.Zoom = 12;
