@@ -12,7 +12,7 @@
             either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
 		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
 
-		<OutputType Condition="'$(TargetFramework)' != 'net8.0'">Exe</OutputType>
+		<OutputType>Exe</OutputType>
 		<RootNamespace>Blaze</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
@@ -33,7 +33,6 @@
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
-		<TargetFrameworks>net8.0-windows10.0.19041.0</TargetFrameworks>
 		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
 		<AppxPackageSigningEnabled>False</AppxPackageSigningEnabled>
 		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
@@ -43,7 +42,6 @@
 		<AppInstallerUri>https://github.com/CJKorn/Blaze</AppInstallerUri>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 		<AppxPackageDir>C:\Users\cjkor\Desktop\UTS\.Net\Projects\Assignment 2\Blaze\BlazePublished\</AppxPackageDir>
-		<EnableDefaultContentItems>false</EnableDefaultContentItems>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -92,11 +90,6 @@
 		<PackageReference Include="NUnit" Version="4.2.2" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
-		<PackageReference Include="xunit" Version="2.9.2" />
-		<PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 	</ItemGroup>
 
 </Project>
